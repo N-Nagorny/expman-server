@@ -1,0 +1,8 @@
+FROM node:14
+WORKDIR /usr/src/expman
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE $PORT
+RUN git clone https://github.com/vishnubob/wait-for-it.git && cd wait-for-it && git checkout 81b1373f17855a4dc21156cfe1694c31d7d1792e
+CMD [ "./wait-for-it/wait-for-it.sh", "--host=postgres", "--port=5432", "--timeout=30", "--", "node", "server.js" ]

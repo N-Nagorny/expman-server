@@ -1,0 +1,31 @@
+version: "2.0"
+
+services:
+  postgres:
+    build:
+      context: postgres
+      dockerfile: Dockerfile.dev
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=expman
+      - POSTGRES_PASSWORD=qqq
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+  expman-server:
+    build:
+      context: expman-server
+      dockerfile: Dockerfile.dev
+      args:
+        - PORT=8081
+    environment:
+      - PORT=8081
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=expman
+      - POSTGRES_PASSWORD=qqq
+    ports:
+      - 8081:8081
+    depends_on:
+      - postgres
+   
+volumes:
+   db-data:
