@@ -1,8 +1,8 @@
 'use strict';
 
 const express = require('express');
-const DbConnection = require('./db-conn.js');
-const Model = require('./model.js');
+const DbConnection = require('./src/db-conn.js');
+const Model = require('./src/model.js');
 
 // Constants
 const PORT = process.env.PORT;

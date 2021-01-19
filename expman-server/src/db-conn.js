@@ -7,7 +7,7 @@ class DbConnection {
       host: dbs_host,
       dialect: "postgres",
       operatorsAliases: false,
-    
+
       pool: {
         max: 5,
         min: 0,
