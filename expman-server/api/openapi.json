@@ -1,0 +1,169 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ExpMan server HTTP RESTful API specification",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/expenses": {
+      "get": {
+        "summary": "List all expenses",
+        "operationId": "getAllExpenses",
+        "responses": {
+          "200": {
+            "description": "An array of expenses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Expenses"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/purchases": {
+      "get": {
+        "summary": "List all purchases",
+        "operationId": "getAllPurchases",
+        "responses": {
+          "200": {
+            "description": "An array of purchases",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Purchases"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/purchase": {
+      "post": {
+        "summary": "Add a purchase",
+        "operationId": "addPurchase",
+        "requestBody": {
+          "description": "Information about a new purchase",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Purchase"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return a 200 status to indicate that the data was received successfully"
+          }
+        }
+      }
+    },
+    "/expense": {
+      "post": {
+        "summary": "Add a expense",
+        "operationId": "addExpense",
+        "requestBody": {
+          "description": "Information about a new expense",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Expense"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return a 200 status to indicate that the data was received successfully"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "required": [
+          "username",
+          "password"
+        ],
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "Purchase": {
+        "required": [
+          "name",
+          "type",
+          "is_mandatory",
+          "is_single_time"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "is_mandatory": {
+            "type": "boolean"
+          },
+          "is_single_time": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Expense": {
+        "required": [
+          "name",
+          "type",
+          "is_mandatory",
+          "is_single_time",
+          "cost"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "is_mandatory": {
+            "type": "boolean"
+          },
+          "is_single_time": {
+            "type": "boolean"
+          },
+          "commentary": {
+            "type": "string"
+          },
+          "cost": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "Expenses": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Expense"
+        }
+      },
+      "Purchases": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Purchase"
+        }
+      }
+    }
+  }
+}
