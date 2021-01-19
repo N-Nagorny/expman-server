@@ -3,7 +3,7 @@ const Sequelize = require("sequelize");
 
 class DbConnection {
   constructor(db, username, password, dbs_host) {
-    this.db_connection = new Sequelize(db, username, password, {
+    this.conn = new Sequelize(db, username, password, {
       host: dbs_host,
       dialect: "postgres",
       operatorsAliases: false,
@@ -19,7 +19,7 @@ class DbConnection {
 
   checkConnection = async () => {
     try {
-      await this.db_connection.authenticate();
+      await this.conn.authenticate();
       console.log('Connection has been established successfully.');
     } catch (error) {
       console.error('Unable to connect to the database:', error);

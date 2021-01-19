@@ -2,6 +2,7 @@
 
 const express = require('express');
 const DbConnection = require('./db-conn.js');
+const Model = require('./model.js');
 
 // Constants
 const PORT = process.env.PORT;
@@ -18,3 +19,4 @@ app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);
 
 db_connection.checkConnection();
+let model = new Model(db_connection.conn);
