@@ -19,6 +19,7 @@ services:
         - PORT=8081
     environment:
       - PORT=8081
+      - POSTGRES_HOST=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=expman
       - POSTGRES_PASSWORD=qqq
