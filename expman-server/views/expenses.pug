@@ -1,13 +1,27 @@
 include partials/header
 
 block content
-    a(href='./add-expense') Add new expense
+    div(class='btn-group')
+        a(href='./add-expense', class='btn btn-primary') Add new expense
+            i(class='fas fa-cart-plus')
     div.text-center
-        each expense in expenses
-            input(type="checkbox" id='spoiler'+expense.name)
-            label(for='spoiler'+expense.name)=expense.name
-            div(class='spoiler')
-                p Expense Name: !{expense.name}
-                p Cost: !{expense.cost}
+        table(class='table table-striped')
+            thead
+                tr
+                    th Name
+                    th Type
+                    th Mandatory
+                    th Commentary
+                    th Single-time
+                    th Cost
+            tbody
+                each expense in expenses
+                    tr
+                        td !{expense.name}
+                        td !{expense.type}
+                        td !{expense.is_mandatory}
+                        td !{expense.commentary}
+                        td !{expense.is_single_time}
+                        td !{expense.cost}
 
 include partials/footer

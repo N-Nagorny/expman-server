@@ -3,8 +3,8 @@ $(function addPurchase() {
   var host = window.location.hostname;
   $("#savePurchaseBtn").click(function(){
     var purchase = {
-      'name': document.getElementById("inputExpenseName").value,
-      'type': document.getElementById("inputExpenseType").value,
+      'name': document.getElementById("inputPurchaseName").value,
+      'type': document.getElementById("inputPurchaseType").value,
       'is_mandatory': document.getElementById("selectIsMandatory").value,
       'is_single_time': document.getElementById("selectIsSingleTime").value
     };

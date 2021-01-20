@@ -5,7 +5,7 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/expenses": {
+    "/api/expenses": {
       "get": {
         "summary": "List all expenses",
         "operationId": "getAllExpenses",
@@ -23,7 +23,7 @@
         }
       }
     },
-    "/purchases": {
+    "/api/purchases": {
       "get": {
         "summary": "List all purchases",
         "operationId": "getAllPurchases",
@@ -41,7 +41,7 @@
         }
       }
     },
-    "/purchase": {
+    "/api/purchase": {
       "post": {
         "summary": "Add a purchase",
         "operationId": "addPurchase",
@@ -62,7 +62,7 @@
         }
       }
     },
-    "/expense": {
+    "/api/expense": {
       "post": {
         "summary": "Add a expense",
         "operationId": "addExpense",
@@ -79,6 +79,41 @@
         "responses": {
           "200": {
             "description": "Return a 200 status to indicate that the data was received successfully"
+          }
+        }
+      }
+    },
+    "/api/purchase-to-expense": {
+      "post": {
+        "summary": "Transform a purchase to an expense",
+        "operationId": "transformPurchaseToExpense",
+        "requestBody": {
+          "description": "Purchase ID and difference of fields between Expense and Purchase",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "cost"
+                ],
+                "properties": {
+                  "commentary": {
+                    "type": "string"
+                  },
+                  "cost": {
+                    "type": "number",
+                    "format": "float"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return a 200 status to indicate that the data was received and handled successfully"
+          },
+          "404": {
+            "description": "Purchase ID is not found"
           }
         }
       }
