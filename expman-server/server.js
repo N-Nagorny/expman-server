@@ -11,6 +11,7 @@ const path = require('path');
 const expressSession = require('express-session');
 const DbConnection = require('./src/db-conn.js');
 const Model = require('./src/model.js');
+const users = require('./users.json');
 
 // Constants
 const PORT = process.env.PORT || 8081;
@@ -19,7 +20,7 @@ const public_dir = path.join(__dirname, 'public')
 const db_connection = new DbConnection(process.env.POSTGRES_DB, process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, process.env.POSTGRES_HOST);
 
 db_connection.checkConnection();
-let model = new Model(db_connection.conn);
+let model = new Model(db_connection.conn, users);
 
 // App
 const app = express();
@@ -63,10 +64,11 @@ passport.use('local', new LocalStrategy(
   })
 )
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser((user, done) => {
   done(null, user);
 });
-passport.deserializeUser(function(user, done) {
+
+passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
@@ -81,32 +83,6 @@ app.get('/', function (req, res, next) {
     }
   });
   console.log(req.user);
-});
-
-app.get('/sign-up', function (req, res, next) {
-  res.render('sign-up', {
-    title: "Sign up",
-    userData: req.user,
-    messages: {
-      danger: req.flash('danger'),
-      warning: req.flash('warning'),
-      success: req.flash('success')
-    }
-  });
-});
-
-app.post('/sign-up', async function (req, res, next) {
-  let pwd = await bcrypt.hash(req.body.password, 5);
-  if (await model.isUserExisting(req.body.username)) {
-    req.flash('warning', "This username is already registered. <a href='/sign-in'>Sign in</a>");
-    res.redirect('/sign-in');
-  } else {
-    model.addUser({ username: req.body.username, passwordHash: pwd })
-    .then(() => {
-      req.flash('success','User created.');
-      res.redirect('/sign-in');
-    })
-  }
 });
 
 app.get('/sign-in', function (req, res, next) {

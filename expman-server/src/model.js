@@ -1,7 +1,8 @@
+const bcrypt = require('bcrypt');
 const DataTypes = require("sequelize");
 
 class Model {
-  constructor (db_connection) {
+  constructor (db_connection, users) {
 
     // Table Users
     this.user = db_connection.define("User", {
@@ -86,7 +87,8 @@ class Model {
     this.user.hasMany(this.expense);
 
     db_connection.sync({force: true})
-      .catch((error)=> {console.log('sync db error...\n' + error.toString())});
+      .then(() => this.createUsers(users))
+      .catch((err)=> console.log('DB Sync error: ', err));
   }
 
   async getAllExpenses() {
@@ -125,6 +127,19 @@ class Model {
       }
     });
     return users.length == 0 ? false : true;
+  }
+
+  async createUsers(users) {
+    if (users.length > 0) {
+      users.forEach(async (item, i, arr) => {
+        let pwd = await bcrypt.hash(item.password, 5);
+        this.addUser({ username: item.username, passwordHash: pwd })
+          .then(() => console.log('User ', item.username, ' created.'))
+          .catch((err) => console.log('User ', item.username, ' wasn\'t created: ', err));
+      });
+    } else {
+      console.log('users array is empty. Missing creating users...');
+    }
   }
 
   async addUser(new_user) {
