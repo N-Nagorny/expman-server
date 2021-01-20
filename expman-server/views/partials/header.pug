@@ -1,0 +1,51 @@
+html(lang='en')
+	head
+		title #{title}
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css')
+		link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Roboto:100,400,700')
+		link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css')
+		link(rel='stylesheet', href='../public/stylesheets/style.css')
+		link(rel='stylesheet', href='../public/stylesheets/spoiler.css')
+		link(rel='stylesheet', href='../public/stylesheets/header_menu.css')
+
+		
+		script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
+		script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js')
+		script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js')
+
+	body
+		if messages
+			if messages.warning
+				if messages.warning.length
+					div.alert.alert-warning.alert-dismissable
+						a(data-dismiss="alert", aria-label="close").close &times;
+						strong #{messages.warning}
+			if messages.danger
+				if messages.danger.length
+					div.alert.alert-danger.alert-dismissable
+						a(data-dismiss="alert", aria-label="close").close &times;
+						strong #{messages.danger}
+			if messages.success
+				if messages.success.length
+					div.alert.alert-success.alert-dismissable
+						a(data-dismiss="alert", aria-label="close").close &times;
+						strong #{messages.success}
+				
+
+			block header
+				if (userData)
+					ul
+						li
+							a(href='./expenses') Expenses
+						li
+							a(href='./purchases') Purchases
+						li
+							a(href='./sign-out') Log out
+				else
+					ul
+						li
+							a(href='./sign-up') Sign up
+						li
+							a(href='./sign-in') Sign in
+			block content

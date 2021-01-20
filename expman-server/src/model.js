@@ -92,16 +92,44 @@ class Model {
   async getAllExpenses() {
     return await this.expense.findAll()
   }
+
   async getAllPurchases() {
     return await this.purchase.findAll()
   }
+
   async addPurchase(new_purchase) {
     const purchase = await this.purchase.create(new_purchase);
     console.log(JSON.stringify(purchase));
   }
+
   async addExpense(new_expense) {
     const expense = await this.expense.create(new_expense);
     console.log(JSON.stringify(expense));
+  }
+
+  async getUser(name) {
+    const users = await this.user.findAll({
+      where: {
+        username: name
+      }
+    });
+    if (users.length == 0)
+      throw Error('User doesn\'t exist');
+    else return users[0].dataValues;
+  }
+
+  async isUserExisting(name) {
+    const users = await this.user.findAll({
+      where: {
+        username: name
+      }
+    });
+    return users.length == 0 ? false : true;
+  }
+
+  async addUser(new_user) {
+    const user = await this.user.create(new_user);
+    console.log(JSON.stringify(user));
   }
 }
 
