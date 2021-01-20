@@ -53,7 +53,7 @@ passport.use('local', new LocalStrategy(
             return done();
           }
           else if (check){
-            return done(null, [{ username: user.username }]);
+            return done(null, { username: user.username });
           } else {
             req.flash('danger', "Oops. Incorrect sign in details.");
             return done(null, false);
@@ -125,6 +125,72 @@ app.get('/sign-out', function(req, res) {
   res.redirect('/');
 });
 
+app.get('/expenses', async (req, res, next) => {
+  if (req.isAuthenticated()) {
+    res.render('expenses', {
+      title: "Expenses",
+      userData: req.user,
+      expenses: await model.getAllExpenses(),
+      messages: {
+        danger: req.flash('danger'),
+        warning: req.flash('warning'),
+        success: req.flash('success')
+      }
+    });
+  } else {
+    res.redirect('/sign-in');
+  }
+});
+
+app.get('/purchases', async (req, res, next) => {
+  if (req.isAuthenticated()) {
+    res.render('purchases', {
+      title: "Purchases",
+      userData: req.user,
+      purchases: await model.getAllPurchases(),
+      messages: {
+        danger: req.flash('danger'),
+        warning: req.flash('warning'),
+        success: req.flash('success')
+      }
+    });
+  } else {
+    res.redirect('/sign-in');
+  }
+});
+
+app.get('/add-expense', async (req, res, next) => {
+  if (req.isAuthenticated()) {
+    res.render('add-expense', {
+      title: "Add new expense",
+      userData: req.user,
+      messages: {
+        danger: req.flash('danger'),
+        warning: req.flash('warning'),
+        success: req.flash('success')
+      }
+    });
+  } else {
+    res.redirect('/sign-in');
+  }
+});
+
+app.get('/add-purchase', async (req, res, next) => {
+  if (req.isAuthenticated()) {
+    res.render('add-purchase', {
+      title: "Add new purchase",
+      userData: req.user,
+      messages: {
+        danger: req.flash('danger'),
+        warning: req.flash('warning'),
+        success: req.flash('success')
+      }
+    });
+  } else {
+    res.redirect('/sign-in');
+  }
+});
+
 app.get('/api/expenses', async (req, res, next) => {
   if (req.isAuthenticated()) {
     console.log(model.getAllExpenses());
@@ -143,9 +209,12 @@ app.get('/api/purchases', async (req, res, next) => {
   }
 });
 
-app.post('/api/expense', function (req, res, next) {
+app.post('/api/expense', async (req, res, next) => {
   if (req.isAuthenticated()) {
-    res.send(model.addExpense(req.body));
+    let body = req.body;
+    const user = await model.getUser(req.user.username);
+    body['UserId'] = user.id;
+    res.send(model.addExpense(body));
   } else {
     res.redirect('/sign-in');
   }

@@ -1,0 +1,31 @@
+include partials/header
+
+block append scripts
+    script(src='../public/javascript/common.js')
+    script(src='../public/javascript/add-purchase.js')
+
+block content
+    div.text-center(class="form")
+        - var h1Classes = ['h3', 'mb-3', 'font-weight-normal']
+        h1(class=h1Classes) Add new purchase
+
+        label(for="inputPurchaseName" class="sr-only") Purchase Name
+        input(type="text" name="name" id="inputPurchaseName" class="form-control" placeholder="Purchase Name" required autofocus)
+
+        label(for="inputPurchaseType" class="sr-only") Purchase Type
+        input(type="text" name="type" id="inputPurchaseType" class="form-control" placeholder="Purchase Type" required)
+
+        label(for="selectIsMandatory" class="sr-only") Mandatory Purchase
+        select(name="is_mandatory" id="selectIsMandatory" class="form-control")
+          option(value='false', selected=true) No
+          option(value='true') Yes
+
+        label(for="selectIsSingleTime" class="sr-only") Single-time Purchase
+        select(name="is_single_time" id="selectIsSingleTime" class="form-control")
+          option(value='false', selected=true) No
+          option(value='true') Yes
+
+        - var buttonClass=['btn', 'btn-lg', 'btn-primary', 'btn-block'];
+        button(id="savePurchaseBtn" class=buttonClass type="submit") Save purchase
+
+include partials/footer

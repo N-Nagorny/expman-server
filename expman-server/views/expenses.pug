@@ -1,0 +1,13 @@
+include partials/header
+
+block content
+    a(href='./add-expense') Add new expense
+    div.text-center
+        each expense in expenses
+            input(type="checkbox" id='spoiler'+expense.name)
+            label(for='spoiler'+expense.name)=expense.name
+            div(class='spoiler')
+                p Expense Name: !{expense.name}
+                p Cost: !{expense.cost}
+
+include partials/footer

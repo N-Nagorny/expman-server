@@ -1,0 +1,37 @@
+include partials/header
+
+block append 
+    script(src='../public/javascript/common.js')
+    script(src='../public/javascript/add-expense.js')
+
+block content
+    div.text-center(class="form")
+        - var h1Classes = ['h3', 'mb-3', 'font-weight-normal']
+        h1(class=h1Classes) Add new expense
+
+        label(for="inputExpenseName" class="sr-only") Expense Name
+        input(type="text" name="name" id="inputExpenseName" class="form-control" placeholder="Expense Name" required autofocus)
+
+        label(for="inputExpenseType" class="sr-only") Expense Type
+        input(type="text" name="type" id="inputExpenseType" class="form-control" placeholder="Expense Type" required)
+
+        label(for="selectIsMandatory" class="sr-only") Mandatory Expense
+        select(name="is_mandatory" id="selectIsMandatory" class="form-control")
+          option(value='false', selected=true) No
+          option(value='true') Yes
+
+        label(for="inputCommentary" class="sr-only") Commentary
+        input(type="text" name="commentary" id="inputCommentary" class="form-control" placeholder="Commentary" required)
+
+        label(for="selectIsSingleTime" class="sr-only") Single-time Expense
+        select(name="is_single_time" id="selectIsSingleTime" class="form-control")
+          option(value='false', selected=true) No
+          option(value='true') Yes
+
+        label(for="inputCost" class="sr-only") Cost
+        input(type="number" name="commentary" id="inputCost" class="form-control" placeholder="Cost" required)
+
+        - var buttonClass=['btn', 'btn-lg', 'btn-primary', 'btn-block'];
+        button(id="saveExpenseBtn" class=buttonClass type="submit") Save expense
+
+include partials/footer

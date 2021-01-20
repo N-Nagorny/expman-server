@@ -1,0 +1,13 @@
+include partials/header
+
+block content
+    a(href='./add-purchase') Add new purchase
+    div.text-center
+        each purchase in purchases
+            input(type="checkbox" id='spoiler'+purchase.name)
+            label(for='spoiler'+purchase.name)=purchase.name
+            div(class='spoiler')
+                p Purchase Name: !{purchase.name}
+                p Purchase Type: !{purchase.type}
+
+include partials/footer
