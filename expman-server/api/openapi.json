@@ -93,9 +93,26 @@
             "application/json": {
               "schema": {
                 "required": [
+                  "id",
                   "cost"
                 ],
                 "properties": {
+                  "id": {
+                    "type": "number",
+                    "format": "int64"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "is_mandatory": {
+                    "type": "boolean"
+                  },
+                  "is_single_time": {
+                    "type": "boolean"
+                  },
                   "commentary": {
                     "type": "string"
                   },

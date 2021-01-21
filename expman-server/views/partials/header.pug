@@ -32,16 +32,17 @@ html(lang='en')
 				
 
 			block header
-				if (userData)
-					ul
+				ul
+					li
+						b(style={color: 'gray'}) ExpMan 0.1.0
+					if (userData)
 						li
 							a(href='./expenses') Expenses
 						li
 							a(href='./purchases') Purchases
 						li
 							a(href='./sign-out') Log out
-				else
-					ul
+					else
 						li
 							a(href='./sign-in') Sign in
 			block content

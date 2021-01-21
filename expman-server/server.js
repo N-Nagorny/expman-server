@@ -161,15 +161,28 @@ app.get('/purchases', async (req, res, next) => {
 
 app.get('/add-expense', async (req, res, next) => {
   if (req.isAuthenticated()) {
-    res.render('add-expense', {
-      title: "Add new expense",
-      userData: req.user,
-      messages: {
-        danger: req.flash('danger'),
-        warning: req.flash('warning'),
-        success: req.flash('success')
-      }
-    });
+    if (req.query.hasOwnProperty('purchaseId')) {
+      res.render('add-expense', {
+        title: "Add new expense",
+        userData: req.user,
+        purchase: await model.getPurchase(req.query.purchaseId),
+        messages: {
+          danger: req.flash('danger'),
+          warning: req.flash('warning'),
+          success: req.flash('success')
+        }
+      });
+    } else {
+      res.render('add-expense', {
+        title: "Add new expense",
+        userData: req.user,
+        messages: {
+          danger: req.flash('danger'),
+          warning: req.flash('warning'),
+          success: req.flash('success')
+        }
+      });
+    }
   } else {
     res.redirect('/sign-in');
   }
@@ -220,9 +233,31 @@ app.post('/api/expense', async (req, res, next) => {
   }
 });
 
+app.post('/api/purchase-to-expense', async (req, res, next) => {
+  if (req.isAuthenticated()) {
+    let body = req.body;
+    const purchase_id = body.id;
+    delete body.id;
+    const purchase = await model.getPurchase(purchase_id);
+    const expense = {...purchase, ...body};
+    model.addExpense(expense);
+    res.send(model.deletePurchase(purchase_id));
+  } else {
+    res.redirect('/sign-in');
+  }
+});
+
 app.post('/api/purchase', function (req, res, next) {
   if (req.isAuthenticated()) {
     res.send(model.addPurchase(req.body));
+  } else {
+    res.redirect('/sign-in');
+  }
+});
+
+app.delete('/api/purchase', function (req, res, next) {
+  if (req.isAuthenticated()) {
+    res.send(model.deletePurchase(req.body.id));
   } else {
     res.redirect('/sign-in');
   }

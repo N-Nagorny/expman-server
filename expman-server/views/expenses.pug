@@ -14,6 +14,7 @@ block content
                     th Commentary
                     th Single-time
                     th Cost
+                    th Created at
             tbody
                 each expense in expenses
                     tr
@@ -23,5 +24,6 @@ block content
                         td !{expense.commentary}
                         td !{expense.is_single_time}
                         td !{expense.cost}
+                        td !{expense.createdAt}
 
 include partials/footer

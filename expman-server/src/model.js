@@ -104,6 +104,25 @@ class Model {
     console.log(JSON.stringify(purchase));
   }
 
+  async getPurchase(purchase_id) {
+    const purchases = await this.purchase.findAll({
+      where: {
+        id: purchase_id
+      }
+    });
+    if (purchases.length == 0)
+      throw Error('Purchase doesn\'t exist');
+    else return purchases[0].dataValues;
+  }
+
+  async deletePurchase(purchase_id) {
+    return this.purchase.destroy({
+      where: {
+        id: purchase_id
+      }
+    });
+  }
+
   async addExpense(new_expense) {
     const expense = await this.expense.create(new_expense);
     console.log(JSON.stringify(expense));

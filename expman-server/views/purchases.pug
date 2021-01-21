@@ -12,6 +12,7 @@ block content
                     th Type
                     th Mandatory
                     th Single-time
+                    th Created at
             tbody
                 each purchase in purchases
                     tr
@@ -19,9 +20,10 @@ block content
                         td !{purchase.type}
                         td !{purchase.is_mandatory}
                         td !{purchase.is_single_time}
+                        td !{purchase.createdAt}
                         td
                             div(class='btn-group')
-                                a(href='./', class='btn btn-primary') To expenses
+                                a(href='./add-expense?purchaseId='+purchase.id, class='btn btn-primary') To expenses
                                     i(class='fas fa-cart-arrow-down')
                         td
                             div(class='btn-group')
