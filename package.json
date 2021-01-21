@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "heroku-prebuild": "cd expman-server && npm install",
+    "start": "cd expman-server && npm start"
+  }
+}
