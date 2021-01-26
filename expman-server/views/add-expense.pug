@@ -10,23 +10,23 @@ block content
         h1(class=h1Classes) Add new expense
 
         label(for="inputExpenseName" class="sr-only") Expense Name
-        input(type="text" name="name" id="inputExpenseName" value=(purchase.name ? purchase.name : false) class="form-control" placeholder="Expense Name" required autofocus)
+        input(type="text" name="name" id="inputExpenseName" value=(purchase ? purchase.name : false) class="form-control" placeholder="Expense Name" required autofocus)
 
         label(for="inputExpenseType" class="sr-only") Expense Type
-        input(type="text" name="type" id="inputExpenseType" value=(purchase.type ? purchase.type : false) class="form-control" placeholder="Expense Type" required)
+        input(type="text" name="type" id="inputExpenseType" value=(purchase ? purchase.type : false) class="form-control" placeholder="Expense Type" required)
 
         label(for="selectIsMandatory" class="sr-only") Mandatory Expense
         select(name="is_mandatory" id="selectIsMandatory" class="form-control")
-          option(value='false', selected=(purchase.is_mandatory === false)) No
-          option(value='true', selected=(purchase.is_mandatory === true)) Yes
+          option(value='false', selected=(purchase ? purchase.is_mandatory === false : true)) No
+          option(value='true', selected=(purchase ? purchase.is_mandatory === true : false)) Yes
 
         label(for="inputCommentary" class="sr-only") Commentary
         input(type="text" name="commentary" id="inputCommentary" class="form-control" placeholder="Commentary" required)
 
         label(for="selectIsSingleTime" class="sr-only") Single-time Expense
         select(name="is_single_time" id="selectIsSingleTime" class="form-control")
-          option(value='false', selected=(purchase.is_single_time === false)) No
-          option(value='true', selected=(purchase.is_single_time === true)) Yes
+          option(value='false', selected=(purchase ? purchase.is_single_time === false : true)) No
+          option(value='true', selected=(purchase ? purchase.is_single_time === true : false)) Yes
 
         label(for="inputCost" class="sr-only") Cost
         input(type="text" name="commentary" id="inputCost" class="form-control" placeholder="Cost" required)

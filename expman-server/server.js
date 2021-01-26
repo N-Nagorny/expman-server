@@ -239,6 +239,7 @@ app.post('/api/purchase-to-expense', async (req, res, next) => {
     const purchase_id = body.id;
     delete body.id;
     const purchase = await model.getPurchase(purchase_id);
+    delete purchase.id;
     const expense = {...purchase, ...body};
     model.addExpense(expense);
     res.send(model.deletePurchase(purchase_id));
