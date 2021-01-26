@@ -2,9 +2,8 @@ const async = require('async');
 const Sequelize = require("sequelize");
 
 class DbConnection {
-  constructor(db, username, password, dbs_host) {
-    this.conn = new Sequelize(db, username, password, {
-      host: dbs_host,
+  constructor(uri) {
+    this.conn = new Sequelize(uri, {
       dialect: "postgres",
       operatorsAliases: false,
 

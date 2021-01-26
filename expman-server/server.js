@@ -17,7 +17,7 @@ const users = require('./users.json');
 const PORT = process.env.PORT || 8081;
 const HOST = '0.0.0.0';
 const public_dir = path.join(__dirname, 'public')
-const db_connection = new DbConnection(process.env.POSTGRES_DB, process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, process.env.POSTGRES_HOST);
+const db_connection = new DbConnection(process.env.DATABASE_URL);
 
 db_connection.checkConnection();
 let model = new Model(db_connection.conn, users);
