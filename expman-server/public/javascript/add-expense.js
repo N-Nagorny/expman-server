@@ -20,9 +20,8 @@ $(function addExpense() {
       type: 'POST',
       data: expense,
       crossDomain: false,
-      success: function(data) {
-        alert('Success!\n' + data);
-        return data;
+      success: function() {
+        window.location.href = "/expenses";
       },
       error: errorMessage
     });

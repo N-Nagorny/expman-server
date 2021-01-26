@@ -13,9 +13,8 @@ $(function addPurchase() {
       type: 'POST',
       data: purchase,
       crossDomain: false,
-      success: function(data) {
-        alert('Success!\n' + data);
-        return data;
+      success: function() {
+        window.location.href = "/purchases";
       },
       error: errorMessage
     });
