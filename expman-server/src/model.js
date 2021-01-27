@@ -86,7 +86,7 @@ class Model {
     this.expense.belongsTo(this.user);
     this.user.hasMany(this.expense);
 
-    db_connection.sync({force: true})
+    db_connection.sync()
       .then(() => this.createUsers(users))
       .catch((err)=> console.log('DB Sync error: ', err));
   }
