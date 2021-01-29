@@ -8,15 +8,8 @@ $(function addPurchase() {
       'is_mandatory': document.getElementById("selectIsMandatory").value,
       'is_single_time': document.getElementById("selectIsSingleTime").value
     };
-    $.ajax({
-      url: '//' + host + ':' + port + '/api/purchase',
-      type: 'POST',
-      data: purchase,
-      crossDomain: false,
-      success: function() {
-        window.location.href = "/purchases";
-      },
-      error: errorMessage
+    makePostRequest(host, port, '/api/purchase', purchase, function() {
+      window.location.href = "/purchases";
     });
   });
 });

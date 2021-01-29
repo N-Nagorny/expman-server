@@ -15,15 +15,12 @@ $(function addExpense() {
     if (purchaseId)
       expense['id'] = purchaseId;
     var page = purchaseId ? '/api/purchase-to-expense' : '/api/expense';
-    $.ajax({
-      url: '//' + host + ':' + port + page,
-      type: 'POST',
-      data: expense,
-      crossDomain: false,
-      success: function() {
-        window.location.href = "/expenses";
-      },
-      error: errorMessage
+    var quantity = purchaseId ? 1 : document.getElementById("inputQuantity").value;
+    for (var i = 0; i < quantity - 1; ++i) {
+      makePostRequest(host, port, page, expense, function() {});
+    }
+    makePostRequest(host, port, page, expense, function() {
+      window.location.href = "/expenses";
     });
   });
 });
