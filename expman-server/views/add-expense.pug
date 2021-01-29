@@ -17,16 +17,16 @@ block content
 
         label(for="selectIsMandatory" class="sr-only") Mandatory Expense
         select(name="is_mandatory" id="selectIsMandatory" class="form-control")
-          option(value='false', selected=(purchase ? purchase.is_mandatory === false : true)) No
-          option(value='true', selected=(purchase ? purchase.is_mandatory === true : false)) Yes
+          option(value='false', selected=(purchase ? purchase.is_mandatory === false : true)) Not mandatory
+          option(value='true', selected=(purchase ? purchase.is_mandatory === true : false)) Mandatory
 
         label(for="inputCommentary" class="sr-only") Commentary
         input(type="text" name="commentary" id="inputCommentary" class="form-control" placeholder="Commentary" required)
 
         label(for="selectIsSingleTime" class="sr-only") Single-time Expense
         select(name="is_single_time" id="selectIsSingleTime" class="form-control")
-          option(value='false', selected=(purchase ? purchase.is_single_time === false : true)) No
-          option(value='true', selected=(purchase ? purchase.is_single_time === true : false)) Yes
+          option(value='false', selected=(purchase ? purchase.is_single_time === false : true)) Regular
+          option(value='true', selected=(purchase ? purchase.is_single_time === true : false)) Single-time
 
         label(for="inputCost" class="sr-only") Cost
         input(type="text" name="commentary" id="inputCost" class="form-control" placeholder="Cost" required)
