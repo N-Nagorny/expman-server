@@ -13,7 +13,10 @@ block content
         input(type="text" name="name" id="inputExpenseName" value=(purchase ? purchase.name : false) class="form-control" placeholder="Expense Name" required autofocus)
 
         label(for="inputExpenseType" class="sr-only") Expense Type
-        input(type="text" name="type" id="inputExpenseType" value=(purchase ? purchase.type : false) class="form-control" placeholder="Expense Type" required)
+        input(list="expenseTypes" autocomplete="false" name="type" id="inputExpenseType" value=(purchase ? purchase.type : false) class="form-control" placeholder="Expense Type" required)
+        datalist(id="expenseTypes")
+            each expenseType in expenseTypes
+                option(value=expenseType.name)
 
         label(for="selectIsMandatory" class="sr-only") Mandatory Expense
         select(name="is_mandatory" id="selectIsMandatory" class="form-control")

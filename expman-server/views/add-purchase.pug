@@ -13,7 +13,10 @@ block content
         input(type="text" name="name" id="inputPurchaseName" class="form-control" placeholder="Purchase Name" required autofocus)
 
         label(for="inputPurchaseType" class="sr-only") Purchase Type
-        input(type="text" name="type" id="inputPurchaseType" class="form-control" placeholder="Purchase Type" required)
+        input(list="purchaseTypes" autocomplete="false" name="type" id="inputPurchaseType" class="form-control" placeholder="Purchase Type" required)
+        datalist(id="purchaseTypes")
+            each purchaseType in purchaseTypes
+                option(value=purchaseType.name)
 
         label(for="selectIsMandatory" class="sr-only") Mandatory Purchase
         select(name="is_mandatory" id="selectIsMandatory" class="form-control")

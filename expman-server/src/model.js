@@ -83,11 +83,29 @@ class Model {
       }
     });
 
+    // Table Types
+    this.type = db_connection.define("Type", {
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+      }
+    });
+
     this.expense.belongsTo(this.user);
     this.user.hasMany(this.expense);
 
     db_connection.sync()
-      .then(() => this.createUsers(users))
+      .then(async () => {
+        await this.createUsers(users);
+        await this.createTypes();
+      })
       .catch((err)=> console.log('DB Sync error: ', err));
   }
 
@@ -95,11 +113,17 @@ class Model {
     return await this.expense.findAll()
   }
 
+  async getAllTypes() {
+    return await this.type.findAll()
+  }
+
   async getAllPurchases() {
     return await this.purchase.findAll()
   }
 
   async addPurchase(new_purchase) {
+    if (new_purchase.type in this.getAllTypes() == false)
+      this.addType(new_purchase.type)
     const purchase = await this.purchase.create(new_purchase);
     console.log(JSON.stringify(purchase));
   }
@@ -124,6 +148,8 @@ class Model {
   }
 
   async addExpense(new_expense) {
+    if (new_expense.type in this.getAllTypes() == false)
+      this.addType(new_expense.type)
     const expense = await this.expense.create(new_expense);
     console.log(JSON.stringify(expense));
   }
@@ -159,6 +185,27 @@ class Model {
     } else {
       console.log('users array is empty. Missing creating users...');
     }
+  }
+
+  async createTypes() {
+    let types = [
+      'Restaurants',
+      'Markets',
+      'Transportation',
+      'Utilities',
+      'Sports and Leisure',
+      'Clothing and Shoes',
+    ]
+    types.forEach(async (item, i, arr) => {
+      this.addType(item)
+        .then(() => console.log('Type ', item, ' created.'))
+        .catch((err) => console.log('Type ', item, ' wasn\'t created: ', err));
+    });
+  }
+
+  async addType(new_type) {
+    const type = await this.type.create({ name: new_type });
+    console.log(JSON.stringify(type));
   }
 
   async addUser(new_user) {

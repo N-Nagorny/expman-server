@@ -165,6 +165,7 @@ app.get('/add-expense', async (req, res, next) => {
       res.render('add-expense', {
         title: "Add new expense",
         userData: req.user,
+        expenseTypes: await model.getAllTypes(),
         purchase: await model.getPurchase(req.query.purchaseId),
         messages: {
           danger: req.flash('danger'),
@@ -176,6 +177,7 @@ app.get('/add-expense', async (req, res, next) => {
       res.render('add-expense', {
         title: "Add new expense",
         userData: req.user,
+        expenseTypes: await model.getAllTypes(),
         messages: {
           danger: req.flash('danger'),
           warning: req.flash('warning'),
@@ -193,6 +195,7 @@ app.get('/add-purchase', async (req, res, next) => {
     res.render('add-purchase', {
       title: "Add new purchase",
       userData: req.user,
+      purchaseTypes: await model.getAllTypes(),
       messages: {
         danger: req.flash('danger'),
         warning: req.flash('warning'),
