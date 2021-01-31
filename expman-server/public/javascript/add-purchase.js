@@ -1,7 +1,6 @@
 $(function addPurchaseBtn() {
   $("#addPurchaseBtn").click(function(){
-    $('#addPurchase').toggleClass("invisible");
-    $('#addPurchase').toggleClass("visible");
+    $('#addPurchase').toggleClass("d-none");
   });
 });
 

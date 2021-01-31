@@ -1,10 +1,9 @@
 $(function addExpenseBtn() {
   if (!($("#addExpenseBtn").length > 0)) {
-    $('#addExpense').toggleClass("invisible");
+    $('#addExpense').toggleClass("d-none");
   }
   $("#addExpenseBtn").click(function(){
-    $('#addExpense').toggleClass("invisible");
-    $('#addExpense').toggleClass("visible");
+    $('#addExpense').toggleClass("d-none");
   });
 });
 

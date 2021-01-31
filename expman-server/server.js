@@ -29,7 +29,7 @@ app.use(express.json()) // for parsing application/json
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieSession({
-  name: 'MyAppName',
+  name: 'ExpMan',
   keys: ['very secret key'],
   maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
 }));
@@ -133,7 +133,7 @@ app.get('/expenses', async (req, res, next) => {
     res.render('expenses', {
       title: "Expenses",
       userData: req.user,
-      expenses: await model.getAllExpenses(),
+      expenses: (await model.getAllExpenses()).reverse(),
       expenseTypes: await model.getAllTypes(),
       messages: {
         danger: req.flash('danger'),
@@ -156,7 +156,7 @@ app.get('/purchases', async (req, res, next) => {
     res.render('purchases', {
       title: "Purchases",
       userData: req.user,
-      purchases: await model.getAllPurchases(),
+      purchases: (await model.getAllPurchases()).reverse(),
       purchaseTypes: await model.getAllTypes(),
       messages: {
         danger: req.flash('danger'),

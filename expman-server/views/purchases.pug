@@ -5,35 +5,11 @@ block append scripts
     script(src='../public/javascript/add-purchase.js')
 
 block content
-    div.text-center
-        table(class='table table-striped')
-            thead
-                tr
-                    th Name
-                    th Type
-                    th(class="d-none d-lg-table-cell") Mandatory
-                    th(class="d-none d-lg-table-cell") Single-time
-                    th Created at
-                    th Actions
-            tbody
-                each purchase in purchases
-                    tr
-                        td !{purchase.name}
-                        td !{purchase.type}
-                        td(class="d-none d-lg-table-cell") !{purchase.is_mandatory}
-                        td(class="d-none d-lg-table-cell") !{purchase.is_single_time}
-                        td !{purchase.createdAt}
-                        td
-                            div(class='btn-group-vertical')
-                                a(href='./add-expense?purchaseId='+purchase.id, class='btn btn-primary') To expenses
-                                    i(class='fas fa-cart-arrow-down')
-                                a(href='./', class='btn btn-primary') Delete
-                                    i(class='fas fa-shopping-cart')
     div(class='btn-group')
         button(id="addPurchaseBtn", class='btn btn-primary') Add new purchase
             i(class='fas fa-cart-plus')
 
-    div.text-center(id="addPurchase", class="form invisible")
+    div.text-center(id="addPurchase", class="form d-none")
         - var h1Classes = ['h3', 'mb-3', 'font-weight-normal']
         h1(class=h1Classes) Add new purchase
 
@@ -59,5 +35,29 @@ block content
         - var buttonClass=['btn', 'btn-lg', 'btn-primary', 'btn-block'];
         button(id="savePurchaseBtn" class=buttonClass type="submit") Save purchase
 
+    div.text-center
+        table(class='table table-striped')
+            thead
+                tr
+                    th Name
+                    th Type
+                    th(class="d-none d-lg-table-cell") Mandatory
+                    th(class="d-none d-lg-table-cell") Single-time
+                    th Created at
+                    th Actions
+            tbody
+                each purchase in purchases
+                    tr
+                        td !{purchase.name}
+                        td !{purchase.type}
+                        td(class="d-none d-lg-table-cell") !{purchase.is_mandatory}
+                        td(class="d-none d-lg-table-cell") !{purchase.is_single_time}
+                        td !{purchase.createdAt}
+                        td
+                            div(class='btn-group-vertical')
+                                a(href='./add-expense?purchaseId='+purchase.id, class='btn btn-primary') To expenses
+                                    i(class='fas fa-cart-arrow-down')
+                                a(href='./', class='btn btn-primary') Delete
+                                    i(class='fas fa-shopping-cart')
 
 include partials/footer
