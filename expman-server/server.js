@@ -134,6 +134,7 @@ app.get('/expenses', async (req, res, next) => {
       title: "Expenses",
       userData: req.user,
       expenses: await model.getAllExpenses(),
+      expenseTypes: await model.getAllTypes(),
       messages: {
         danger: req.flash('danger'),
         warning: req.flash('warning'),
@@ -156,6 +157,7 @@ app.get('/purchases', async (req, res, next) => {
       title: "Purchases",
       userData: req.user,
       purchases: await model.getAllPurchases(),
+      purchaseTypes: await model.getAllTypes(),
       messages: {
         danger: req.flash('danger'),
         warning: req.flash('warning'),
@@ -198,28 +200,6 @@ app.get('/add-expense', async (req, res, next) => {
         }
       });
     }
-  } else {
-    res.redirect(url.format({
-      pathname:"/sign-in",
-      query: {
-        "redirectUri": req.originalUrl
-      }
-    }));
-  }
-});
-
-app.get('/add-purchase', async (req, res, next) => {
-  if (req.isAuthenticated()) {
-    res.render('add-purchase', {
-      title: "Add new purchase",
-      userData: req.user,
-      purchaseTypes: await model.getAllTypes(),
-      messages: {
-        danger: req.flash('danger'),
-        warning: req.flash('warning'),
-        success: req.flash('success')
-      }
-    });
   } else {
     res.redirect(url.format({
       pathname:"/sign-in",

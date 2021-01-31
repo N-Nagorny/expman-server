@@ -1,3 +1,11 @@
+$(function addPurchaseBtn() {
+  $("#addPurchaseBtn").click(function(){
+    $('#addPurchase').toggleClass("invisible");
+    $('#addPurchase').toggleClass("visible");
+  });
+});
+
+
 $(function addPurchase() {
   var port = window.location.port;
   var host = window.location.hostname;

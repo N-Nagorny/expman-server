@@ -1,9 +1,10 @@
 include partials/header
 
+block append
+    script(src='../public/javascript/common.js')
+    script(src='../public/javascript/add-expense.js')
+
 block content
-    div(class='btn-group')
-        a(href='./add-expense', class='btn btn-primary') Add new expense
-            i(class='fas fa-cart-plus')
     div.text-center
         table(class='table table-striped')
             thead
@@ -25,5 +26,8 @@ block content
                         td(class="d-none d-lg-table-cell") !{expense.is_single_time}
                         td !{expense.cost}
                         td !{expense.createdAt}
-
+    div(class='btn-group')
+            button(id="addExpenseBtn", class='btn btn-primary') Add new expense
+                i(class='fas fa-cart-plus')
+    include partials/add-expense-block
 include partials/footer

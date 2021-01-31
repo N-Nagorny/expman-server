@@ -1,0 +1,35 @@
+div.text-center(id="addExpense", class="form invisible")
+    - var h1Classes = ['h3', 'mb-3', 'font-weight-normal']
+    h1(class=h1Classes) Add new expense
+
+    label(for="inputExpenseName" class="sr-only") Expense Name
+    input(type="text" name="name" id="inputExpenseName" value=(purchase ? purchase.name : false) class="form-control" placeholder="Expense Name" required autofocus)
+
+    label(for="inputExpenseType" class="sr-only") Expense Type
+    input(list="expenseTypes" autocomplete="false" name="type" id="inputExpenseType" value=(purchase ? purchase.type : false) class="form-control" placeholder="Expense Type" required)
+    datalist(id="expenseTypes")
+        each expenseType in expenseTypes
+            option(value=expenseType.name)
+
+    label(for="selectIsMandatory" class="sr-only") Mandatory Expense
+    select(name="is_mandatory" id="selectIsMandatory" class="form-control")
+      option(value='false', selected=(purchase ? purchase.is_mandatory === false : true)) Not mandatory
+      option(value='true', selected=(purchase ? purchase.is_mandatory === true : false)) Mandatory
+
+    label(for="inputCommentary" class="sr-only") Commentary
+    input(type="text" name="commentary" id="inputCommentary" class="form-control" placeholder="Commentary" required)
+
+    label(for="selectIsSingleTime" class="sr-only") Single-time Expense
+    select(name="is_single_time" id="selectIsSingleTime" class="form-control")
+      option(value='false', selected=(purchase ? purchase.is_single_time === false : true)) Regular
+      option(value='true', selected=(purchase ? purchase.is_single_time === true : false)) Single-time
+
+    label(for="inputCost" class="sr-only") Cost
+    input(type="text" name="commentary" id="inputCost" class="form-control" placeholder="Cost" required)
+
+    if (!purchase)
+      label(for="inputQuantity" class="sr-only") Quantity
+      input(type="number" name="quantity" id="inputQuantity" class="form-control" placeholder="Quantity" value="1" required)
+
+    - var buttonClass=['btn', 'btn-lg', 'btn-primary', 'btn-block'];
+    button(id="saveExpenseBtn" class=buttonClass type="submit") Save expense

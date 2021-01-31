@@ -1,3 +1,13 @@
+$(function addExpenseBtn() {
+  if (!($("#addExpenseBtn").length > 0)) {
+    $('#addExpense').toggleClass("invisible");
+  }
+  $("#addExpenseBtn").click(function(){
+    $('#addExpense').toggleClass("invisible");
+    $('#addExpense').toggleClass("visible");
+  });
+});
+
 $(function addExpense() {
   var port = window.location.port;
   var host = window.location.hostname;

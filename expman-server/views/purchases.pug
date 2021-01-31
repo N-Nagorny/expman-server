@@ -1,9 +1,10 @@
 include partials/header
 
+block append scripts
+    script(src='../public/javascript/common.js')
+    script(src='../public/javascript/add-purchase.js')
+
 block content
-    div(class='btn-group')
-        a(href='./add-purchase', class='btn btn-primary') Add new purchase
-            i(class='fas fa-cart-plus')
     div.text-center
         table(class='table table-striped')
             thead
@@ -13,6 +14,7 @@ block content
                     th(class="d-none d-lg-table-cell") Mandatory
                     th(class="d-none d-lg-table-cell") Single-time
                     th Created at
+                    th Actions
             tbody
                 each purchase in purchases
                     tr
@@ -23,9 +25,39 @@ block content
                         td !{purchase.createdAt}
                         td
                             div(class='btn-group-vertical')
-                                a(href='./add-expense?purchaseId='+purchase.id, class='btn btn-primary')
+                                a(href='./add-expense?purchaseId='+purchase.id, class='btn btn-primary') To expenses
                                     i(class='fas fa-cart-arrow-down')
-                                a(href='./', class='btn btn-primary')
+                                a(href='./', class='btn btn-primary') Delete
                                     i(class='fas fa-shopping-cart')
+    div(class='btn-group')
+        button(id="addPurchaseBtn", class='btn btn-primary') Add new purchase
+            i(class='fas fa-cart-plus')
+
+    div.text-center(id="addPurchase", class="form invisible")
+        - var h1Classes = ['h3', 'mb-3', 'font-weight-normal']
+        h1(class=h1Classes) Add new purchase
+
+        label(for="inputPurchaseName" class="sr-only") Purchase Name
+        input(type="text" name="name" id="inputPurchaseName" class="form-control" placeholder="Purchase Name" required autofocus)
+
+        label(for="inputPurchaseType" class="sr-only") Purchase Type
+        input(list="purchaseTypes" autocomplete="false" name="type" id="inputPurchaseType" class="form-control" placeholder="Purchase Type" required)
+        datalist(id="purchaseTypes")
+            each purchaseType in purchaseTypes
+                option(value=purchaseType.name)
+
+        label(for="selectIsMandatory" class="sr-only") Mandatory Purchase
+        select(name="is_mandatory" id="selectIsMandatory" class="form-control")
+          option(value='false', selected=true) Not mandatory
+          option(value='true') Mandatory
+
+        label(for="selectIsSingleTime" class="sr-only") Single-time Purchase
+        select(name="is_single_time" id="selectIsSingleTime" class="form-control")
+          option(value='false', selected=true) Regular
+          option(value='true') Single-time
+
+        - var buttonClass=['btn', 'btn-lg', 'btn-primary', 'btn-block'];
+        button(id="savePurchaseBtn" class=buttonClass type="submit") Save purchase
+
 
 include partials/footer
