@@ -5,7 +5,6 @@ html(lang='en')
 
 		link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css')
 		link(rel='stylesheet', href='../public/stylesheets/style.css')
-		link(rel='stylesheet', href='../public/stylesheets/header_menu.css')
 		link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css')
 		block scripts
 			script(src='https://code.jquery.com/jquery-3.4.1.js')
@@ -32,17 +31,20 @@ html(lang='en')
 				
 
 			block header
-				ul
-					li
-						b(style={color: 'gray'}) ExpMan 0.1.0
-					if (userData)
-						li
-							a(href='./expenses') Expenses
-						li
-							a(href='./purchases') Purchases
-						li
-							a(href='./sign-out') Log out
-					else
-						li
-							a(href='./sign-in') Sign in
+				nav(class="navbar navbar-expand-lg navbar-dark bg-dark")
+					div(class="navbar-brand") ExpMan 0.1.0
+					button(class="navbar-toggler", type="button", data-toggle="collapse", data-target="#navbarSupportedContent", aria-controls="navbarSupportedContent", aria-expanded="false", aria-label="Toggle navigation")
+						span(class="navbar-toggler-icon")
+					div(class="collapse navbar-collapse", id="navbarSupportedContent")
+						ul(class="navbar-nav mr-auto")
+							if (userData)
+								li(class="nav-item")
+									a(class="nav-link", href='./expenses') Expenses
+								li(class="nav-item")
+									a(class="nav-link", href='./purchases') Purchases
+								li(class="nav-item")
+									a(class="nav-link", href='./sign-out') Log out
+							else
+								li(class="nav-item")
+									a(class="nav-link", href='./sign-in') Sign in
 			block content
