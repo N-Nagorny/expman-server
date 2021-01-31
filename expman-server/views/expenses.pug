@@ -10,9 +10,9 @@ block content
                 tr
                     th Name
                     th Type
-                    th Mandatory
-                    th Commentary
-                    th Single-time
+                    th(class="d-none d-lg-table-cell") Mandatory
+                    th(class="d-none d-lg-table-cell") Commentary
+                    th(class="d-none d-lg-table-cell") Single-time
                     th Cost
                     th Created at
             tbody
@@ -20,9 +20,9 @@ block content
                     tr
                         td !{expense.name}
                         td !{expense.type}
-                        td !{expense.is_mandatory}
-                        td !{expense.commentary}
-                        td !{expense.is_single_time}
+                        td(class="d-none d-lg-table-cell") !{expense.is_mandatory}
+                        td(class="d-none d-lg-table-cell") !{expense.commentary}
+                        td(class="d-none d-lg-table-cell") !{expense.is_single_time}
                         td !{expense.cost}
                         td !{expense.createdAt}
 
