@@ -9,6 +9,8 @@ div.container
 				input(type='password', name='password' class='form-control', placeholder='Password', required)
 				input(type='checkbox', name='remember', placeholder='Remember me')
 				|   Remember me
+				if redirectUri
+					input(type="hidden", name="redirectUri" value=redirectUri)
 				button(class='btn btn-lg btn-primary btn-block', type='submit') Sign in
 				span.clearfix
 

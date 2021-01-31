@@ -8,10 +8,11 @@ const flash = require('connect-flash');
 const LocalStrategy = require('passport-local').Strategy;
 const passport = require('passport');
 const path = require('path');
-const expressSession = require('express-session');
+const cookieSession = require('cookie-session');
 const DbConnection = require('./src/db-conn.js');
 const Model = require('./src/model.js');
 const users = require('./users.json');
+const url = require('url');
 
 // Constants
 const PORT = process.env.PORT || 8081;
@@ -27,7 +28,11 @@ const app = express();
 app.use(express.json()) // for parsing application/json
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(expressSession({ secret: 'mysecretkey' }));
+app.use(cookieSession({
+  name: 'MyAppName',
+  keys: ['very secret key'],
+  maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -92,6 +97,7 @@ app.get('/sign-in', function (req, res, next) {
     res.render('sign-in', {
       title: "Sign in",
       userData: req.user,
+      redirectUri: req.query.redirectUri,
       messages: {
         danger: req.flash('danger'),
         warning: req.flash('warning'),
@@ -103,17 +109,14 @@ app.get('/sign-in', function (req, res, next) {
 
 app.post('/sign-in',
   passport.authenticate('local', {
-    successRedirect: '/expenses',
     failureRedirect: '/sign-in',
     failureFlash: true
   }),
   function(req, res) {
-    if (req.body.remember) {
-      req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Cookie expires after 30 days
-    } else {
-      req.session.cookie.expires = false; // Cookie expires at end of session
+    if (!req.body.remember) {
+      req.sessionOptions.expires = false; // Cookie expires at end of session
     }
-    res.redirect('/');
+    res.redirect(req.body.redirectUri ? req.body.redirectUri : "/expenses");
   }
 );
 
@@ -138,7 +141,12 @@ app.get('/expenses', async (req, res, next) => {
       }
     });
   } else {
-    res.redirect('/sign-in');
+    res.redirect(url.format({
+      pathname:"/sign-in",
+      query: {
+        "redirectUri": req.originalUrl
+      }
+    }));
   }
 });
 
@@ -155,7 +163,12 @@ app.get('/purchases', async (req, res, next) => {
       }
     });
   } else {
-    res.redirect('/sign-in');
+    res.redirect(url.format({
+      pathname:"/sign-in",
+      query: {
+        "redirectUri": req.originalUrl
+      }
+    }));
   }
 });
 
@@ -186,7 +199,12 @@ app.get('/add-expense', async (req, res, next) => {
       });
     }
   } else {
-    res.redirect('/sign-in');
+    res.redirect(url.format({
+      pathname:"/sign-in",
+      query: {
+        "redirectUri": req.originalUrl
+      }
+    }));
   }
 });
 
@@ -203,7 +221,12 @@ app.get('/add-purchase', async (req, res, next) => {
       }
     });
   } else {
-    res.redirect('/sign-in');
+    res.redirect(url.format({
+      pathname:"/sign-in",
+      query: {
+        "redirectUri": req.originalUrl
+      }
+    }));
   }
 });
 
