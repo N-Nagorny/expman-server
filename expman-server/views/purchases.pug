@@ -36,28 +36,28 @@ block content
         button(id="savePurchaseBtn" class=buttonClass type="submit") Save purchase
 
     div.text-center
-        table(class='table table-striped')
+        table(data-toggle="table", data-pagination="true")
             thead
                 tr
                     th Name
-                    th Type
-                    th(class="d-none d-lg-table-cell") Mandatory
+                    th(data-sortable="true") Type
+                    th Mandatory
                     th(class="d-none d-lg-table-cell") Single-time
-                    th Created at
+                    th(class="d-none d-lg-table-cell") Created at
                     th Actions
             tbody
                 each purchase in purchases
                     tr
                         td !{purchase.name}
                         td !{purchase.type}
-                        td(class="d-none d-lg-table-cell") !{purchase.is_mandatory}
+                        td !{purchase.is_mandatory}
                         td(class="d-none d-lg-table-cell") !{purchase.is_single_time}
-                        td !{purchase.createdAt}
+                        td(class="d-none d-lg-table-cell") !{purchase.createdAt}
                         td
                             div(class='btn-group-vertical')
-                                a(href='./add-expense?purchaseId='+purchase.id, class='btn btn-primary') To expenses
+                                a(href='./add-expense?purchaseId='+purchase.id, class='btn btn-primary')
                                     i(class='fas fa-cart-arrow-down')
-                                a(href='./', class='btn btn-primary') Delete
-                                    i(class='fas fa-shopping-cart')
+                                a(href='./', class='btn btn-primary')
+                                    i(class='fas fa-trash-alt')
 
 include partials/footer
