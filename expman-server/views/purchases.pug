@@ -36,28 +36,6 @@ block content
         button(id="savePurchaseBtn" class=buttonClass type="submit") Save purchase
 
     div.text-center
-        table(data-toggle="table", data-pagination="true")
-            thead
-                tr
-                    th Name
-                    th(data-sortable="true") Type
-                    th Mandatory
-                    th(class="d-none d-lg-table-cell") Single-time
-                    th(class="d-none d-lg-table-cell") Created at
-                    th Actions
-            tbody
-                each purchase in purchases
-                    tr
-                        td !{purchase.name}
-                        td !{purchase.type}
-                        td !{purchase.is_mandatory}
-                        td(class="d-none d-lg-table-cell") !{purchase.is_single_time}
-                        td(class="d-none d-lg-table-cell") !{purchase.createdAt}
-                        td
-                            div(class='btn-group-vertical')
-                                a(href='./add-expense?purchaseId='+purchase.id, class='btn btn-primary')
-                                    i(class='fas fa-cart-arrow-down')
-                                a(href='./', class='btn btn-primary')
-                                    i(class='fas fa-trash-alt')
+        table(id="purchasesTable", data-id-field="id", data-toggle="table", data-pagination="true", data-sort-name="createdAt", data-sort-order="desc", data-url="../api/purchases")
 
 include partials/footer

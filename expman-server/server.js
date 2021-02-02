@@ -133,7 +133,6 @@ app.get('/expenses', async (req, res, next) => {
     res.render('expenses', {
       title: "Expenses",
       userData: req.user,
-      expenses: (await model.getAllExpenses()).reverse(),
       expenseTypes: await model.getAllTypes(),
       messages: {
         danger: req.flash('danger'),
@@ -156,7 +155,6 @@ app.get('/purchases', async (req, res, next) => {
     res.render('purchases', {
       title: "Purchases",
       userData: req.user,
-      purchases: (await model.getAllPurchases()).reverse(),
       purchaseTypes: await model.getAllTypes(),
       messages: {
         danger: req.flash('danger'),

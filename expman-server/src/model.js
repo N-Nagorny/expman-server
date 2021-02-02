@@ -122,7 +122,7 @@ class Model {
   }
 
   async addPurchase(new_purchase) {
-    if (new_purchase.type in this.getAllTypes() == false)
+    if (new_purchase.type in await this.getAllTypes() == false)
       this.addType(new_purchase.type)
     const purchase = await this.purchase.create(new_purchase);
     console.log(JSON.stringify(purchase));
