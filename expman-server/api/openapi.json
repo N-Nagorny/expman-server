@@ -21,6 +21,25 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "Add an expense",
+        "operationId": "addExpense",
+        "requestBody": {
+          "description": "Information about a new expense",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Expense"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return a 200 status to indicate that the data was received successfully"
+          }
+        }
       }
     },
     "/api/purchases": {
@@ -39,9 +58,7 @@
             }
           }
         }
-      }
-    },
-    "/api/purchase": {
+      },
       "post": {
         "summary": "Add a purchase",
         "operationId": "addPurchase",
@@ -62,75 +79,24 @@
         }
       }
     },
-    "/api/expense": {
-      "post": {
-        "summary": "Add a expense",
-        "operationId": "addExpense",
-        "requestBody": {
-          "description": "Information about a new expense",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Expense"
-              }
+    "/api/purchases/{id}": {
+      "delete": {
+        "summary": "Delete a purchase",
+        "operationId": "deletePurchase",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of purchase to delete",
+            "required": true,
+            "schema": {
+              "type": "integer"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
-        }
-      }
-    },
-    "/api/purchase-to-expense": {
-      "post": {
-        "summary": "Transform a purchase to an expense",
-        "operationId": "transformPurchaseToExpense",
-        "requestBody": {
-          "description": "Purchase ID and difference of fields between Expense and Purchase",
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "id",
-                  "cost"
-                ],
-                "properties": {
-                  "id": {
-                    "type": "number",
-                    "format": "int64"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "type": {
-                    "type": "string"
-                  },
-                  "is_mandatory": {
-                    "type": "boolean"
-                  },
-                  "is_single_time": {
-                    "type": "boolean"
-                  },
-                  "commentary": {
-                    "type": "string"
-                  },
-                  "cost": {
-                    "type": "number",
-                    "format": "float"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received and handled successfully"
-          },
-          "404": {
-            "description": "Purchase ID is not found"
+            "description": "Returns a 200 status to indicate that the purchase is deleted successfully."
           }
         }
       }

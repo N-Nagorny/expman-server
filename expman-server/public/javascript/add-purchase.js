@@ -15,7 +15,7 @@ $(function addPurchase() {
       'is_mandatory': document.getElementById("selectIsMandatory").value == "true",
       'is_single_time': document.getElementById("selectIsSingleTime").value == "true"
     };
-    makePostRequest(host, port, '/api/purchase', purchase, function() {
+    makePostRequest(host, port, '/api/purchases', purchase, function() {
       window.location.href = "/purchases";
     });
   });

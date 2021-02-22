@@ -17,6 +17,16 @@ function makePostRequest(host, port, page, body, successCallback) {
   });
 }
 
+function makeDeleteRequest(host, port, page, id, successCallback) {
+  $.ajax({
+    url: '//' + host + ':' + port + page + '/' + id,
+    type: 'DELETE',
+    crossDomain: false,
+    success: successCallback,
+    error: errorMessage
+  });
+}
+
 function detailFormatter(index, row) {
   var html = []
   $.each(row, function (key, value) {
@@ -30,6 +40,7 @@ function operateFormatter(value, row, index) {
     '<a href="./add-expense?purchaseId='+row.id+'"',
     '<i class="fas fa-cart-arrow-down"></i>',
     '</a>  ',
+    '<a> ',
     '<i class="remove fas fa-trash"></i>',
     '</a>',
   ].join('')
@@ -39,16 +50,8 @@ window.operateEvents = {
   'click .remove': function (e, value, row, index) {
     var port = window.location.port;
     var host = window.location.hostname;
-    var body = {
-      'id': row.id
-    }
-    $.ajax({
-      url: '//' + host + ':' + port + '/api/purchase',
-      type: 'DELETE',
-      data: body,
-      crossDomain: false,
-      success: window.location.href = "/purchases",
-      error: errorMessage
+    makeDeleteRequest(host, port, '/api/purchases', row.id, function() {
+      window.location.href = "/purchases";
     });
   }
 }

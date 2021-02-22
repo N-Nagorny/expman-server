@@ -21,15 +21,15 @@ $(function addExpense() {
       'is_single_time': document.getElementById("selectIsSingleTime").value == "true",
       'cost': Number(document.getElementById("inputCost").value)
     };
-    if (purchaseId)
-      expense['id'] = Number(purchaseId);
-    var page = purchaseId ? '/api/purchase-to-expense' : '/api/expense';
     var quantity = purchaseId ? 1 : document.getElementById("inputQuantity").value;
     for (var i = 0; i < quantity - 1; ++i) {
-      makePostRequest(host, port, page, expense, function() {});
+      makePostRequest(host, port, '/api/expenses', expense, function() {});
     }
-    makePostRequest(host, port, page, expense, function() {
-      window.location.href = "/expenses";
+    makePostRequest(host, port, '/api/expenses', expense, function() {
+      if (purchaseId)
+        makeDeleteRequest(host, port, '/api/purchases', purchaseId, () => window.location.href = '/purchases');
+      else
+        window.location.href = "/expenses";
     });
   });
 });

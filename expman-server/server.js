@@ -240,16 +240,7 @@ api.get('/expenses', async (req, res, next) => {
   }
 });
 
-api.get('/purchases', async (req, res, next) => {
-  if (req.isAuthenticated()) {
-    console.log(model.getAllPurchases());
-    res.json(await model.getAllPurchases());
-  } else {
-    res.redirect('/sign-in');
-  }
-});
-
-api.post('/expense', async (req, res, next) => {
+api.post('/expenses', async (req, res, next) => {
   if (req.isAuthenticated()) {
     let body = req.body;
     const user = await model.getUser(req.user.username);
@@ -260,22 +251,16 @@ api.post('/expense', async (req, res, next) => {
   }
 });
 
-api.post('/purchase-to-expense', async (req, res, next) => {
+api.get('/purchases', async (req, res, next) => {
   if (req.isAuthenticated()) {
-    let body = req.body;
-    const purchase_id = body.id;
-    delete body.id;
-    const purchase = await model.getPurchase(purchase_id);
-    delete purchase.id;
-    const expense = {...purchase, ...body};
-    model.addExpense(expense);
-    res.send(model.deletePurchase(purchase_id));
+    console.log(model.getAllPurchases());
+    res.json(await model.getAllPurchases());
   } else {
     res.redirect('/sign-in');
   }
 });
 
-api.post('/purchase', function (req, res, next) {
+api.post('/purchases', function (req, res, next) {
   if (req.isAuthenticated()) {
     res.send(model.addPurchase(req.body));
   } else {
@@ -283,9 +268,10 @@ api.post('/purchase', function (req, res, next) {
   }
 });
 
-api.delete('/purchase', function (req, res, next) {
+api.delete('/purchases/:id', function (req, res, next) {
   if (req.isAuthenticated()) {
-    res.send(model.deletePurchase(req.body.id));
+    const { id } = req.params;
+    res.send(model.deletePurchase(id));
   } else {
     res.redirect('/sign-in');
   }
