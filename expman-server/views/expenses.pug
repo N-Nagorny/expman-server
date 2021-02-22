@@ -8,7 +8,9 @@ block content
     div(class='btn-group')
             button(id="addExpenseBtn", class='btn btn-primary') Add new expense
                 i(class='fas fa-cart-plus')
+
     include partials/add-expense-block
+
     div.text-center
         table(data-toggle="table", data-detail-view="true", data-pagination="true", data-detail-formatter="detailFormatter", data-sort-name="createdAt", data-sort-order="desc", data-query-params="queryParams", data-url="../api/expenses")
             thead
