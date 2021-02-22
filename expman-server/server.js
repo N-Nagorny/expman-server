@@ -5,6 +5,7 @@ const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const express = require('express');
+const OpenApiValidator = require('express-openapi-validator');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const path = require('path');
@@ -36,6 +37,20 @@ app.use(cookieSession({
   keys: ['very secret key'],
   maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
 }));
+
+api.use(
+  OpenApiValidator.middleware({
+    apiSpec: './api/openapi.json',
+    validateRequests: true
+  }),
+);
+api.use((err, req, res, next) => {
+  // format error
+  res.status(err.status || 500).json({
+    message: err.message,
+    errors: err.errors,
+  });
+});
 
 frontend.use(flash());
 frontend.use('/public', express.static(public_dir));

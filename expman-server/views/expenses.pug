@@ -10,7 +10,7 @@ block content
                 i(class='fas fa-cart-plus')
     include partials/add-expense-block
     div.text-center
-        table(data-toggle="table", data-detail-view="true", data-pagination="true", data-detail-formatter="detailFormatter", data-sort-name="createdAt", data-sort-order="desc", data-url="../api/expenses")
+        table(data-toggle="table", data-detail-view="true", data-pagination="true", data-detail-formatter="detailFormatter", data-sort-name="createdAt", data-sort-order="desc", data-query-params="queryParams", data-url="../api/expenses")
             thead
                 tr
                     th(data-field="name") Name

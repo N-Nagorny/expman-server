@@ -16,13 +16,13 @@ $(function addExpense() {
     var expense = {
       'name': document.getElementById("inputExpenseName").value,
       'type': document.getElementById("inputExpenseType").value,
-      'is_mandatory': document.getElementById("selectIsMandatory").value,
+      'is_mandatory': document.getElementById("selectIsMandatory").value == "true",
       'commentary': document.getElementById("inputCommentary").value,
-      'is_single_time': document.getElementById("selectIsSingleTime").value,
-      'cost': document.getElementById("inputCost").value
+      'is_single_time': document.getElementById("selectIsSingleTime").value == "true",
+      'cost': Number(document.getElementById("inputCost").value)
     };
     if (purchaseId)
-      expense['id'] = purchaseId;
+      expense['id'] = Number(purchaseId);
     var page = purchaseId ? '/api/purchase-to-expense' : '/api/expense';
     var quantity = purchaseId ? 1 : document.getElementById("inputQuantity").value;
     for (var i = 0; i < quantity - 1; ++i) {

@@ -8,7 +8,9 @@ function makePostRequest(host, port, page, body, successCallback) {
   $.ajax({
     url: '//' + host + ':' + port + page,
     type: 'POST',
-    data: body,
+    contentType: "application/json; charset=utf-8",
+    dataType: 'json',
+    data: JSON.stringify(body),
     crossDomain: false,
     success: successCallback,
     error: errorMessage
@@ -81,6 +83,10 @@ function initTable() {
       }]
     ]
   })
+}
+
+function queryParams(params) {
+  return {};
 }
 
 $(function() {

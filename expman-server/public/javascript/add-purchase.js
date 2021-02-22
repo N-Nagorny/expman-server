@@ -12,8 +12,8 @@ $(function addPurchase() {
     var purchase = {
       'name': document.getElementById("inputPurchaseName").value,
       'type': document.getElementById("inputPurchaseType").value,
-      'is_mandatory': document.getElementById("selectIsMandatory").value,
-      'is_single_time': document.getElementById("selectIsSingleTime").value
+      'is_mandatory': document.getElementById("selectIsMandatory").value == "true",
+      'is_single_time': document.getElementById("selectIsSingleTime").value == "true"
     };
     makePostRequest(host, port, '/api/purchase', purchase, function() {
       window.location.href = "/purchases";
