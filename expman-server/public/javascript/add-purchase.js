@@ -10,6 +10,7 @@ $(function addPurchase() {
   $("#savePurchaseBtn").click(function(){
     $("#addPurchaseForm").validate({
       submitHandler: () => {
+        $('#savePurchaseBtn').html('<div class="fa fa-spinner fa-spin"></div>');
         var purchase = {
           'name': document.getElementById("inputPurchaseName").value,
           'type': document.getElementById("inputPurchaseType").value,

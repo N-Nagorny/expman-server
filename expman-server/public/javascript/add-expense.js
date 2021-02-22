@@ -15,6 +15,7 @@ $(function addExpense() {
   $("#saveExpenseBtn").click(() => {
     $("#addExpenseForm").validate({
       submitHandler: () => {
+        $('#saveExpenseBtn').html('<div class="fa fa-spinner fa-spin"></div>');
         var expense = {
           'name': document.getElementById("inputExpenseName").value,
           'type': document.getElementById("inputExpenseType").value,
