@@ -1,4 +1,4 @@
-div.text-center(id="addExpense", class="form d-none")
+form.text-center(id="addExpenseForm", class="form d-none", action=false)
     - var h1Classes = ['h3', 'mb-3', 'font-weight-normal']
     h1(class=h1Classes) Add new expense
 
@@ -17,7 +17,7 @@ div.text-center(id="addExpense", class="form d-none")
       option(value='true', selected=(purchase ? purchase.is_mandatory === true : false)) Mandatory
 
     label(for="inputCommentary" class="sr-only") Commentary
-    input(type="text" name="commentary" id="inputCommentary" class="form-control" placeholder="Commentary" required)
+    input(type="text" name="commentary" id="inputCommentary" class="form-control" placeholder="Commentary")
 
     label(for="selectIsSingleTime" class="sr-only") Single-time Expense
     select(name="is_single_time" id="selectIsSingleTime" class="form-control")
@@ -25,7 +25,7 @@ div.text-center(id="addExpense", class="form d-none")
       option(value='true', selected=(purchase ? purchase.is_single_time === true : false)) Single-time
 
     label(for="inputCost" class="sr-only") Cost
-    input(type="text" name="commentary" id="inputCost" class="form-control" placeholder="Cost" required)
+    input(type="number" step="0.01" name="commentary" id="inputCost" class="form-control" placeholder="Cost" required)
 
     if (!purchase)
       label(for="inputQuantity" class="sr-only") Quantity
