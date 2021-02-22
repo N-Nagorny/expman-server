@@ -195,6 +195,9 @@ class Model {
       'Utilities',
       'Sports and Leisure',
       'Clothing and Shoes',
+      'Healthcare',
+      'Personal hygiene',
+      'Housekeeping'
     ]
     types.forEach(async (item, i, arr) => {
       this.addType(item)
