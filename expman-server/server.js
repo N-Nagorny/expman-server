@@ -1,18 +1,19 @@
-'use strict';
-
+// External dependencies
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const express = require('express');
 const flash = require('connect-flash');
-const LocalStrategy = require('passport-local').Strategy;
-const passport = require('passport');
-const path = require('path');
+const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
+const express = require('express');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const path = require('path');
+const url = require('url');
+
+// Internal dependencies
 const DbConnection = require('./src/db-conn.js');
 const Model = require('./src/model.js');
 const users = require('./users.json');
-const url = require('url');
 
 // Constants
 const PORT = process.env.PORT || 8081;
@@ -23,8 +24,10 @@ const db_connection = new DbConnection(process.env.DATABASE_URL);
 db_connection.checkConnection();
 let model = new Model(db_connection.conn, users);
 
-// App
+// Express App
 const app = express();
+const api = express();
+const frontend = express();
 app.use(express.json()) // for parsing application/json
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,13 +36,15 @@ app.use(cookieSession({
   keys: ['very secret key'],
   maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
 }));
+
+frontend.use(flash());
+frontend.use('/public', express.static(public_dir));
+console.log("Serving ", public_dir);
+frontend.set('view engine', 'pug');
+frontend.set('view options', { layout: false });
+
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
-app.use('/public', express.static(public_dir));
-console.log("Serving ", public_dir);
-app.set('view engine', 'pug');
-app.set('view options', { layout: false });
 
 passport.use('local', new LocalStrategy(
   { passReqToCallback: true },
@@ -77,7 +82,10 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-app.get('/', function (req, res, next) {
+app.use(['/'], frontend);
+app.use(['/api'], api);
+
+frontend.get('/', function (req, res, next) {
   res.render('index', {
     title: "Home",
     userData: req.user,
@@ -90,7 +98,7 @@ app.get('/', function (req, res, next) {
   console.log(req.user);
 });
 
-app.get('/sign-in', function (req, res, next) {
+frontend.get('/sign-in', function (req, res, next) {
   if (req.isAuthenticated()) {
     res.redirect('/expenses');
   } else {
@@ -107,7 +115,7 @@ app.get('/sign-in', function (req, res, next) {
   }
 });
 
-app.post('/sign-in',
+frontend.post('/sign-in',
   passport.authenticate('local', {
     failureRedirect: '/sign-in',
     failureFlash: true
@@ -120,7 +128,7 @@ app.post('/sign-in',
   }
 );
 
-app.get('/sign-out', function(req, res) {
+frontend.get('/sign-out', function(req, res) {
   console.log(req.isAuthenticated());
   req.logout();
   console.log(req.isAuthenticated());
@@ -128,7 +136,7 @@ app.get('/sign-out', function(req, res) {
   res.redirect('/');
 });
 
-app.get('/expenses', async (req, res, next) => {
+frontend.get('/expenses', async (req, res, next) => {
   if (req.isAuthenticated()) {
     res.render('expenses', {
       title: "Expenses",
@@ -150,7 +158,7 @@ app.get('/expenses', async (req, res, next) => {
   }
 });
 
-app.get('/purchases', async (req, res, next) => {
+frontend.get('/purchases', async (req, res, next) => {
   if (req.isAuthenticated()) {
     res.render('purchases', {
       title: "Purchases",
@@ -172,7 +180,7 @@ app.get('/purchases', async (req, res, next) => {
   }
 });
 
-app.get('/add-expense', async (req, res, next) => {
+frontend.get('/add-expense', async (req, res, next) => {
   if (req.isAuthenticated()) {
     if (req.query.hasOwnProperty('purchaseId')) {
       res.render('add-expense', {
@@ -208,7 +216,7 @@ app.get('/add-expense', async (req, res, next) => {
   }
 });
 
-app.get('/api/expenses', async (req, res, next) => {
+api.get('/expenses', async (req, res, next) => {
   if (req.isAuthenticated()) {
     console.log(model.getAllExpenses());
     res.json(await model.getAllExpenses());
@@ -217,7 +225,7 @@ app.get('/api/expenses', async (req, res, next) => {
   }
 });
 
-app.get('/api/purchases', async (req, res, next) => {
+api.get('/purchases', async (req, res, next) => {
   if (req.isAuthenticated()) {
     console.log(model.getAllPurchases());
     res.json(await model.getAllPurchases());
@@ -226,7 +234,7 @@ app.get('/api/purchases', async (req, res, next) => {
   }
 });
 
-app.post('/api/expense', async (req, res, next) => {
+api.post('/expense', async (req, res, next) => {
   if (req.isAuthenticated()) {
     let body = req.body;
     const user = await model.getUser(req.user.username);
@@ -237,7 +245,7 @@ app.post('/api/expense', async (req, res, next) => {
   }
 });
 
-app.post('/api/purchase-to-expense', async (req, res, next) => {
+api.post('/purchase-to-expense', async (req, res, next) => {
   if (req.isAuthenticated()) {
     let body = req.body;
     const purchase_id = body.id;
@@ -252,7 +260,7 @@ app.post('/api/purchase-to-expense', async (req, res, next) => {
   }
 });
 
-app.post('/api/purchase', function (req, res, next) {
+api.post('/purchase', function (req, res, next) {
   if (req.isAuthenticated()) {
     res.send(model.addPurchase(req.body));
   } else {
@@ -260,7 +268,7 @@ app.post('/api/purchase', function (req, res, next) {
   }
 });
 
-app.delete('/api/purchase', function (req, res, next) {
+api.delete('/purchase', function (req, res, next) {
   if (req.isAuthenticated()) {
     res.send(model.deletePurchase(req.body.id));
   } else {
