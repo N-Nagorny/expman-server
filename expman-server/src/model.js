@@ -148,7 +148,7 @@ class Model {
   }
 
   async addExpense(new_expense) {
-    if (new_expense.type in this.getAllTypes() == false)
+    if (new_expense.type in await this.getAllTypes() == false)
       this.addType(new_expense.type)
     const expense = await this.expense.create(new_expense);
     console.log(JSON.stringify(expense));

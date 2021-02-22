@@ -6,8 +6,15 @@ block append scripts
 
 block content
     div(class='btn-group')
-        button(id="addPurchaseBtn", class='btn btn-primary') Add new purchase
+        button(id="addPurchaseBtn", class='btn btn-primary')
             i(class='fas fa-cart-plus')
+            |  Add
+        button(id="transferPurchaseBtn", class='btn btn-primary', disabled)
+            i(class='fas fa-cart-arrow-down')
+            |  Transfer to expenses
+        button(id="deletePurchaseBtn", class='btn btn-primary btn-danger', disabled)
+            i(class="fas fa-trash")
+            |  Delete
 
     include partials/add-purchase-block
 

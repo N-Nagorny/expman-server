@@ -198,11 +198,12 @@ frontend.get('/purchases', async (req, res, next) => {
 frontend.get('/add-expense', async (req, res, next) => {
   if (req.isAuthenticated()) {
     if (req.query.hasOwnProperty('purchaseId')) {
+      let purchaseId = Array.isArray(req.query.purchaseId) ? req.query.purchaseId[0] : req.query.purchaseId;
       res.render('add-expense', {
         title: "Add new expense",
         userData: req.user,
         expenseTypes: await model.getAllTypes(),
-        purchase: await model.getPurchase(req.query.purchaseId),
+        purchase: await model.getPurchase(purchaseId),
         messages: {
           danger: req.flash('danger'),
           warning: req.flash('warning'),

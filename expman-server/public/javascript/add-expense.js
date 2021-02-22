@@ -11,7 +11,12 @@ $(function addExpense() {
   var port = window.location.port;
   var host = window.location.hostname;
   const urlParams = new URLSearchParams(window.location.search);
-  const purchaseId = urlParams.get('purchaseId');
+  const purchaseIds = urlParams.getAll('purchaseId');
+  var purchaseId = null;
+  if (purchaseIds.length) {
+    purchaseId = purchaseIds[0];
+    purchaseIds.shift();
+  }
   $("#saveExpenseBtn").click(() => {
     $("#addExpenseForm").validate({
       submitHandler: () => {
@@ -24,15 +29,28 @@ $(function addExpense() {
           'is_single_time': document.getElementById("selectIsSingleTime").value == "true",
           'cost': Number(document.getElementById("inputCost").value)
         };
-        var quantity = purchaseId ? 1 : document.getElementById("inputQuantity").value;
+        var quantity = purchaseId != null ? 1 : document.getElementById("inputQuantity").value;
         for (var i = 0; i < quantity - 1; ++i) {
           makePostRequest(host, port, '/api/expenses', expense, function() {});
         }
         makePostRequest(host, port, '/api/expenses', expense, function() {
-          if (purchaseId)
-            makeDeleteRequest(host, port, '/api/purchases', purchaseId, () => window.location.href = '/purchases');
-          else
+          if (purchaseId != null) {
+            let params = null;
+            if (purchaseIds.length) {
+              params = new URLSearchParams();
+              purchaseIds.forEach((value, index, array) => {
+                params.append('purchaseId', value);
+              })
+            }
+            makeDeleteRequest(host, port, '/api/purchases', purchaseId, () => {
+              let page = '/purchases';
+              if (params != null)
+                page = '/add-expense' + '?' + params.toString();
+              window.location.href = page;
+            });
+          } else {
             window.location.href = "/expenses";
+          }
         });
       }
     });
