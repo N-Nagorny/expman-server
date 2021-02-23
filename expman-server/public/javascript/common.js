@@ -17,6 +17,19 @@ function makePostRequest(host, port, page, body, successCallback) {
   });
 }
 
+function makePutRequest(host, port, page, id, body, successCallback) {
+  $.ajax({
+    url: '//' + host + ':' + port + page + '/' + id,
+    type: 'PUT',
+    contentType: "application/json; charset=utf-8",
+    dataType: 'json',
+    data: JSON.stringify(body),
+    crossDomain: false,
+    success: successCallback,
+    error: errorMessage
+  });
+}
+
 function makeDeleteRequest(host, port, page, id, successCallback) {
   $.ajax({
     url: '//' + host + ':' + port + page + '/' + id,
@@ -28,10 +41,15 @@ function makeDeleteRequest(host, port, page, id, successCallback) {
 }
 
 function detailFormatter(index, row) {
-  var html = []
+  var html = [];
   $.each(row, function (key, value) {
     html.push('<p><b>' + key + ':</b> ' + value + '</p>')
-  })
+  });
+  html.push('<form action="/add-expense">');
+  html.push('<input type="hidden" name="expenseId" value="' + row.id + '" />');
+  html.push('<input class="btn btn-primary" type="submit" value="Edit expense" />');
+  html.push('</form>');
+
   return html.join('')
 }
 

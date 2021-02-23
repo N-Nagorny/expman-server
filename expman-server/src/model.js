@@ -45,7 +45,7 @@ class Model {
       },
       commentary: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       is_single_time: {
         type: DataTypes.BOOLEAN,
@@ -54,6 +54,10 @@ class Model {
       cost: {
         type: DataTypes.FLOAT,
         allowNull: false
+      },
+      next_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true
       }
     });
 
@@ -110,7 +114,55 @@ class Model {
   }
 
   async getAllExpenses() {
-    return await this.expense.findAll()
+    return await this.expense.findAll({
+      where: {
+        next_id: null
+      }
+    });
+  }
+
+  async addExpense(new_expense) {
+    if (new_expense.type in await this.getAllTypes() == false)
+      this.addType(new_expense.type)
+    const expense = await this.expense.create(new_expense);
+    console.log(JSON.stringify(expense));
+    return expense;
+  }
+
+  async getExpense(expense_id) {
+    const expenses = await this.expense.findAll({
+      where: {
+        id: expense_id
+      }
+    });
+    if (expenses.length == 0)
+      throw Error('Expense ' + expense_id + ' doesn\'t exist');
+    else return expenses[0].dataValues;
+  }
+
+  async updateExpense(expense_id, new_expense) {
+    this.expense.findAll({
+      where: {
+        id: expense_id,
+        next_id: null
+      }
+    }).then((records) => {
+      if (records.length) {
+        this.expense.create(new_expense).then((expense) => {
+          return this.expense.update({ next_id: expense.id }, {
+            where: {
+              id: expense_id
+            }
+          });
+        }, (err) => {
+          throw ("Expense " + JSON.stringify(new_expense) + " is not created: ", err);
+        })
+      } else {
+        throw ("Expense " + expense_id + " is not found.");
+      }
+    }, (e) => {
+      throw ("Expense " + expense_id + " search is failed: " + e);
+    });
   }
 
   async getAllTypes() {
@@ -145,13 +197,6 @@ class Model {
         id: purchase_id
       }
     });
-  }
-
-  async addExpense(new_expense) {
-    if (new_expense.type in await this.getAllTypes() == false)
-      this.addType(new_expense.type)
-    const expense = await this.expense.create(new_expense);
-    console.log(JSON.stringify(expense));
   }
 
   async getUser(name) {

@@ -210,6 +210,19 @@ frontend.get('/add-expense', async (req, res, next) => {
           success: req.flash('success')
         }
       });
+    } else if (req.query.hasOwnProperty('expenseId')) {
+      let expenseId = Array.isArray(req.query.expenseId) ? req.query.expenseId[0] : req.query.expenseId;
+      res.render('add-expense', {
+        title: "Add new expense",
+        userData: req.user,
+        expenseTypes: await model.getAllTypes(),
+        expense: await model.getExpense(expenseId),
+        messages: {
+          danger: req.flash('danger'),
+          warning: req.flash('warning'),
+          success: req.flash('success')
+        }
+      });
     } else {
       res.render('add-expense', {
         title: "Add new expense",
@@ -247,6 +260,23 @@ api.post('/expenses', async (req, res, next) => {
     const user = await model.getUser(req.user.username);
     body['UserId'] = user.id;
     res.send(model.addExpense(body));
+  } else {
+    res.redirect('/sign-in');
+  }
+});
+
+api.put('/expenses/:id', async function (req, res, next) {
+  if (req.isAuthenticated()) {
+    const { id } = req.params;
+    const body = req.body;
+    const user = await model.getUser(req.user.username);
+    body['UserId'] = user.id;
+    model.updateExpense(id, body).then((expense) => {
+      console.log(expense);
+      res.send({});
+    }, (err) => {
+      res.send(err);
+    });
   } else {
     res.redirect('/sign-in');
   }

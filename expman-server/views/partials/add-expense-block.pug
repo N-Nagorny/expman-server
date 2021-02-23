@@ -3,31 +3,31 @@ form.text-center(id="addExpenseForm", class="form d-none", action=false)
     h1(class=h1Classes) Add new expense
 
     label(for="inputExpenseName" class="sr-only") Expense Name
-    input(type="text" name="name" id="inputExpenseName" value=(purchase ? purchase.name : false) class="form-control" placeholder="Expense Name" required autofocus)
+    input(type="text" name="name" id="inputExpenseName" value=(purchase ? purchase.name : (expense ? expense.name : false)) class="form-control" placeholder="Expense Name" required autofocus)
 
     label(for="inputExpenseType" class="sr-only") Expense Type
-    input(list="expenseTypes" autocomplete="false" name="type" id="inputExpenseType" value=(purchase ? purchase.type : false) class="form-control" placeholder="Expense Type" required)
+    input(list="expenseTypes" autocomplete="false" name="type" id="inputExpenseType" value=(purchase ? purchase.type : (expense ? expense.type : false)) class="form-control" placeholder="Expense Type" required)
     datalist(id="expenseTypes")
         each expenseType in expenseTypes
             option(value=expenseType.name)
 
     label(for="selectIsMandatory" class="sr-only") Mandatory Expense
     select(name="is_mandatory" id="selectIsMandatory" class="form-control")
-      option(value='false', selected=(purchase ? purchase.is_mandatory === false : true)) Not mandatory
-      option(value='true', selected=(purchase ? purchase.is_mandatory === true : false)) Mandatory
+      option(value='false', selected=(purchase ? purchase.is_mandatory === false : (expense ? expense.is_mandatory === false : true))) Not mandatory
+      option(value='true', selected=(purchase ? purchase.is_mandatory === true : (expense ? expense.is_mandatory === true : false))) Mandatory
 
     label(for="inputCommentary" class="sr-only") Commentary
-    input(type="text" name="commentary" id="inputCommentary" class="form-control" placeholder="Commentary")
+    input(type="text" name="commentary" id="inputCommentary" value=(expense ? expense.commentary : false) class="form-control" placeholder="Commentary")
 
     label(for="selectIsSingleTime" class="sr-only") Single-time Expense
     select(name="is_single_time" id="selectIsSingleTime" class="form-control")
-      option(value='false', selected=(purchase ? purchase.is_single_time === false : true)) Regular
-      option(value='true', selected=(purchase ? purchase.is_single_time === true : false)) Single-time
+      option(value='false', selected=(purchase ? purchase.is_single_time === false : (expense ? expense.is_single_time === false : true))) Regular
+      option(value='true', selected=(purchase ? purchase.is_single_time === true : (expense ? expense.is_single_time === true : false))) Single-time
 
     label(for="inputCost" class="sr-only") Cost
-    input(type="number" step="0.01" name="commentary" id="inputCost" class="form-control" placeholder="Cost" required)
+    input(type="number" step="0.01" name="commentary" id="inputCost" value=(expense ? expense.cost : false) class="form-control" placeholder="Cost" required)
 
-    if (!purchase)
+    if (!purchase && !expense)
       label(for="inputQuantity" class="sr-only") Quantity
       input(type="number" name="quantity" id="inputQuantity" class="form-control" placeholder="Quantity" value="1" required)
 

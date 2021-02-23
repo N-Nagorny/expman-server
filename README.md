@@ -1,7 +1,7 @@
 # ExpMan
 
 ## docker-compose
-ExpMan is adapted to deploy with docker-compose. There are two Docker containers:
+ExpMan is adapted to be deployed with docker-compose. There are two Docker containers:
 1. `postgresql` which contains a DBMS instance of the same name.
 2. `expman-server` which contains the application itself.
 

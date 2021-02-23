@@ -74,7 +74,29 @@
         },
         "responses": {
           "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
+            "description": "The purchase is added successfully"
+          }
+        }
+      }
+    },
+    "/api/expenses/{id}": {
+      "put": {
+        "summary": "Replace a specific expense with another one",
+        "operationId": "replaceExpense",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of expense to replace",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The expense is replaced successfully"
           }
         }
       }
@@ -167,6 +189,10 @@
           "cost": {
             "type": "number",
             "format": "float"
+          },
+          "next_id": {
+            "description": "ID of the next version of the expense",
+            "type": "integer"
           }
         }
       },
