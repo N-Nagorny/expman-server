@@ -19,6 +19,15 @@ block content
     include partials/add-purchase-block
 
     div.text-center
-        table(id="purchasesTable", data-id-field="id", data-toggle="table", data-pagination="true", data-sort-name="createdAt", data-sort-order="desc", data-query-params="queryParams", data-url="../api/purchases")
+        table(
+            id="purchasesTable"
+            data-id-field="id"
+            data-toggle="table"
+            data-pagination="true"
+            data-sort-name="createdAt"
+            data-sort-order="desc"
+            data-query-params="queryParams"
+            data-url="../api/purchases"
+        )
 
 include partials/footer

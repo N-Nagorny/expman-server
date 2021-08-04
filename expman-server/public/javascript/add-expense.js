@@ -63,3 +63,16 @@ $(function addExpense() {
     });
   });
 });
+
+function priceFormatter(data) {
+  var field = this.field
+  return '€' + data.map(function (row) {
+    return +row[field]
+  }).reduce(function (sum, i) {
+    return sum + i
+  }, 0).toFixed(1)
+}
+
+function nameFormatter(data) {
+  return 'Total'
+}

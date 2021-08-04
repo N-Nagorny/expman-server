@@ -13,15 +13,25 @@ block content
     include partials/add-expense-block
 
     div.text-center
-        table(data-toggle="table", data-detail-view="true", data-pagination="true", data-detail-formatter="detailFormatter", data-sort-name="createdAt", data-sort-order="desc", data-query-params="queryParams", data-url="../api/expenses")
+        table(
+            data-toggle="table"
+            data-show-footer="true"
+            data-detail-view="true"
+            data-pagination="true"
+            data-detail-formatter="detailFormatter"
+            data-sort-name="createdAt"
+            data-sort-order="desc"
+            data-query-params="queryParams"
+            data-url="../api/expenses"
+        )
             thead
                 tr
-                    th(data-field="name") Name
+                    th(data-field="name", data-footer-formatter="nameFormatter") Name
                     th(data-field="type") Type
                     th(data-field="is_mandatory", class="d-none d-lg-table-cell") Mandatory
                     th(data-field="commentary", class="d-none d-lg-table-cell") Commentary
                     th(data-field="is_single_time", class="d-none d-lg-table-cell") Single-time
-                    th(data-field="cost") Cost
+                    th(data-field="cost", data-footer-formatter="priceFormatter") Cost
                     th(data-field="createdAt", class="d-none d-lg-table-cell") Created at
 
 include partials/footer
