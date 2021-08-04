@@ -101,6 +101,24 @@
         }
       }
     },
+    "/api/expenses/my": {
+      "get": {
+        "summary": "List all expenses of the current user",
+        "operationId": "getUserExpenses",
+        "responses": {
+          "200": {
+            "description": "An array of expenses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Expenses"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/purchases/{id}": {
       "delete": {
         "summary": "Delete a purchase",

@@ -22,7 +22,7 @@ block content
             data-sort-name="createdAt"
             data-sort-order="desc"
             data-query-params="queryParams"
-            data-url="../api/expenses"
+            data-url=(my ? "../api/expenses/my" : "../api/expenses")
         )
             thead
                 tr

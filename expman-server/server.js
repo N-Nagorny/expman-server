@@ -157,6 +157,30 @@ frontend.get('/expenses', async (req, res, next) => {
       title: "Expenses",
       userData: req.user,
       expenseTypes: await model.getAllTypes(),
+      my: false,
+      messages: {
+        danger: req.flash('danger'),
+        warning: req.flash('warning'),
+        success: req.flash('success')
+      }
+    });
+  } else {
+    res.redirect(url.format({
+      pathname:"/sign-in",
+      query: {
+        "redirectUri": req.originalUrl
+      }
+    }));
+  }
+});
+
+frontend.get('/my-expenses', async (req, res, next) => {
+  if (req.isAuthenticated()) {
+    res.render('expenses', {
+      title: "Expenses",
+      userData: req.user,
+      expenseTypes: await model.getAllTypes(),
+      my: true,
       messages: {
         danger: req.flash('danger'),
         warning: req.flash('warning'),
@@ -249,6 +273,17 @@ api.get('/expenses', async (req, res, next) => {
   if (req.isAuthenticated()) {
     console.log(model.getAllExpenses());
     res.json(await model.getAllExpenses());
+  } else {
+    res.redirect('/sign-in');
+  }
+});
+
+api.get('/expenses/my', async (req, res, next) => {
+  if (req.isAuthenticated()) {
+    const user = await model.getUser(req.user.username);
+    const users = await model.getUserExpenses(user.id)
+    console.log("HAY!", users);
+    res.json(await users["Expenses"]);
   } else {
     res.redirect('/sign-in');
   }

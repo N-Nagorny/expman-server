@@ -121,6 +121,16 @@ class Model {
     });
   }
 
+  async getUserExpenses(user_id) {
+    const users = await this.user.findAll({
+      where: {
+        id: user_id
+      },
+      include: this.expense
+    });
+    return users[0].dataValues;
+  }
+
   async addExpense(new_expense) {
     if (new_expense.type in await this.getAllTypes() == false)
       this.addType(new_expense.type)
