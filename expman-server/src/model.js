@@ -106,9 +106,9 @@ class Model {
     this.user.hasMany(this.expense);
 
     db_connection.sync()
-      .then(async () => {
-        await this.createUsers(users);
-        await this.createTypes();
+      .then(() => {
+        this.createUsers(users);
+        this.createTypes();
       })
       .catch((err)=> console.log('DB Sync error: ', err));
   }
@@ -132,11 +132,9 @@ class Model {
   }
 
   async addExpense(new_expense) {
-    if (new_expense.type in await this.getAllTypes() == false)
-      this.addType(new_expense.type)
-    const expense = await this.expense.create(new_expense);
-    console.log(JSON.stringify(expense));
-    return expense;
+    if (!(await this.getAllTypes()).includes(new_expense.type))
+      await this.addType(new_expense.type)
+    return this.expense.create(new_expense);
   }
 
   async getExpense(expense_id) {
@@ -176,7 +174,10 @@ class Model {
   }
 
   async getAllTypes() {
-    return await this.type.findAll()
+    const types = await this.type.findAll();
+    return types.map((item) => {
+      return item.dataValues.name;
+    });
   }
 
   async getAllPurchases() {
@@ -184,10 +185,9 @@ class Model {
   }
 
   async addPurchase(new_purchase) {
-    if (new_purchase.type in await this.getAllTypes() == false)
-      this.addType(new_purchase.type)
-    const purchase = await this.purchase.create(new_purchase);
-    console.log(JSON.stringify(purchase));
+    if (!(await this.getAllTypes()).includes(new_purchase.type))
+      await this.addType(new_purchase.type)
+    return this.purchase.create(new_purchase);
   }
 
   async getPurchase(purchase_id) {
@@ -229,20 +229,19 @@ class Model {
     return users.length == 0 ? false : true;
   }
 
-  async createUsers(users) {
-    if (users.length > 0) {
-      users.forEach(async (item, i, arr) => {
+  createUsers(users) {
+    console.log('Creating %i users', users.length);
+    users.forEach(async (item) => {
+      if (!(await this.isUserExisting(item.username))) {
         let pwd = await bcrypt.hash(item.password, 5);
-        this.addUser({ username: item.username, passwordHash: pwd })
+        await this.addUser({ username: item.username, passwordHash: pwd })
           .then(() => console.log('User ', item.username, ' created.'))
           .catch((err) => console.log('User ', item.username, ' wasn\'t created: ', err));
-      });
-    } else {
-      console.log('users array is empty. Missing creating users...');
-    }
+      }
+    });
   }
 
-  async createTypes() {
+  createTypes() {
     let types = [
       'Restaurants',
       'Markets',
@@ -254,21 +253,22 @@ class Model {
       'Personal hygiene',
       'Housekeeping'
     ]
-    types.forEach(async (item, i, arr) => {
-      this.addType(item)
-        .then(() => console.log('Type ', item, ' created.'))
-        .catch((err) => console.log('Type ', item, ' wasn\'t created: ', err));
+    console.log('Creating %i types', types.length);
+    types.forEach(async (item) => {
+      if (!(await this.getAllTypes()).includes(item)) {
+        await this.addType(item)
+          .then(() => console.log('Type ', item, ' created.'))
+          .catch((err) => console.log('Type ', item, ' wasn\'t created: ', err));
+      }
     });
   }
 
   async addType(new_type) {
-    const type = await this.type.create({ name: new_type });
-    console.log(JSON.stringify(type));
+    return this.type.create({ name: new_type });
   }
 
   async addUser(new_user) {
-    const user = await this.user.create(new_user);
-    console.log(JSON.stringify(user));
+    return this.user.create(new_user);
   }
 }
 

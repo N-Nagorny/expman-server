@@ -9,7 +9,7 @@ form.text-center(id="addExpenseForm", class="form d-none", action=false)
     input(list="expenseTypes" autocomplete="false" name="type" id="inputExpenseType" value=(purchase ? purchase.type : (expense ? expense.type : false)) class="form-control" placeholder="Expense Type" required)
     datalist(id="expenseTypes")
         each expenseType in expenseTypes
-            option(value=expenseType.name)
+            option(value=expenseType)
 
     label(for="selectIsMandatory" class="sr-only") Mandatory Expense
     select(name="is_mandatory" id="selectIsMandatory" class="form-control")

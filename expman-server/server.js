@@ -294,7 +294,7 @@ api.post('/expenses', async (req, res, next) => {
     let body = req.body;
     const user = await model.getUser(req.user.username);
     body['UserId'] = user.id;
-    res.send(model.addExpense(body));
+    res.send(await model.addExpense(body));
   } else {
     res.redirect('/sign-in');
   }
@@ -326,9 +326,9 @@ api.get('/purchases', async (req, res, next) => {
   }
 });
 
-api.post('/purchases', function (req, res, next) {
+api.post('/purchases', async (req, res, next) => {
   if (req.isAuthenticated()) {
-    res.send(model.addPurchase(req.body));
+    res.send(await model.addPurchase(req.body));
   } else {
     res.redirect('/sign-in');
   }
