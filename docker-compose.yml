@@ -24,6 +24,8 @@ services:
       - 8081:8081
     depends_on:
       - postgresql
-   
+    volumes:
+      - ./expman-server:/usr/src/expman
+
 volumes:
    db-data:

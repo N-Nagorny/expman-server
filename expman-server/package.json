@@ -5,7 +5,7 @@
   "author": "Nikita Nagorny",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "async": "3.2.0",
@@ -21,5 +21,8 @@
     "pg": "8.5.1",
     "pug": "3.0.0",
     "sequelize": "6.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "2.0.20"
   }
 }
